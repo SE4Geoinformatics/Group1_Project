@@ -3,3 +3,13 @@
 Define the requirements for your software (what the software should offer to its users
 and how it interacts with the external environment) in a Requirement Analysis and
 Specification Document (RASD) - (deadline 20th of April 2021)
+
+Guangyu Ding script 28/03
+Users: real estate customers, urban planner
+Domain Analysis
+The web application of XXXX is aimed at providing the environmental factors in the city for house buyers. 
+And meanwhile municipalities could apply it on the urban health or urban economy thesis, for instances, 
+to analyze the relationship between traffic and noise and make city park planning.
+This web application will be run online by the users, without interaction with other software or hardware.
+Generally, our product is a platform where users could update, monitor and exchange urban environmental information as references, to help them make decisions.
+(left to be completed
