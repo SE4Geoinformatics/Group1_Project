@@ -1,14 +1,14 @@
-ⅠThe project use the Bootstrap v5.0.0 plugins(https://getbootstrap.com/) to build the View of pages.
+Ⅰ The project use the Bootstrap v5.0.0 plugins(https://getbootstrap.com/) to build the View of pages.
 
 
-ⅡThe project use the postgresql as the database:
+Ⅱ The project use the postgresql as the database:
 
 1: create a database in your postgresql: iUrbanDB
 2: edit the configuration file: database.ini or dbConfig.txt
 3: run the database.py to create db tables into your database
 
 
-ⅢThe project structure:
+Ⅲ The project structure:
 
 |--iUrban
     |--static
@@ -32,7 +32,7 @@
     |--requirements.txt    // Record the virtual environment info
     
     
-ⅣThe project environment:
+Ⅳ The project environment:
 
 /***************************************************************************/   
 /*A requirements.txt file must be included in the Python project to record */
