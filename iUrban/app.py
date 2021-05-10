@@ -24,8 +24,8 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
 
 def connect_db():
-    # use this code in VS Code
-    # myFile = open("E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    # use this code in VS Code: edit the path
+    # myFile = open("E:\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
     # use this code in Spyder
     myFile = open("dbConfig.txt", "r", encoding='utf-8')
