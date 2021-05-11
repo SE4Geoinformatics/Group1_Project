@@ -26,8 +26,9 @@
     |    |--table.html
     |--app.py              // Start the application***
     |--database.ini        // Database info file
-    |--config.py           // Read the DB info from databse.ini    
+    |--dbConfig.py           // Read the DB info from databse.ini    
     |--database.py         // Drop and Create DB Table
+    |--dbConfig.txt         //the same as the database.ini
     |--readme.md    
     |--requirements.txt    // Record the virtual environment info
     
