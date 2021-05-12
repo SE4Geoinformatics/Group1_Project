@@ -12,22 +12,19 @@
 
 |--iUrban
     |--static
+    |    |--bootstrap-5.0.0-beta3-dist
     |    |--css
-    |    |    |--register.css
-    |    |    |--login.css
-    |    |    |--home.css
+    |    |    |--******.css
     |    |--img
     |    |--js
-    |        |--home.js
+    |        |--******.js
     |--templates
-    |    |--register.html
-    |    |--login.html
-    |    |--home.html
-    |    |--table.html
+    |    |--base.html
+    |    |--index.html
     |--app.py              // Start the application***
-    |--database.ini        // Database info file
-    |--dbConfig.py           // Read the DB info from databse.ini    
+    |--database.ini        // Database info file      
     |--database.py         // Drop and Create DB Table
+    |--dbConfig.py           // Read the DB info from databse.ini 
     |--dbConfig.txt         //the same as the database.ini
     |--readme.md    
     |--requirements.txt    // Record the virtual environment info
