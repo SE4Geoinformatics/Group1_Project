@@ -17,22 +17,22 @@ def connect_db():
     # # use the dbConfig.txt
 
     # # use this code in VS Code
-    # myFile = open("E:\\path in your computer\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    myFile = open("E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
     # # use this code in Spyder
     # myFile = open("dbConfig.txt", "r", encoding='utf-8')
 
-    # connStr = myFile.readline()
-    # conn = connect(connStr)
-    # return conn
-
-
-
-    # use the dbConfig.py
-    params = config()    
-    print('Connecting to the PostgreSQL database...')
-    conn = connect(**params)
+    connStr = myFile.readline()
+    conn = connect(connStr)
     return conn
+
+
+
+    # # use the dbConfig.py
+    # params = config()    
+    # print('Connecting to the PostgreSQL database...')
+    # conn = connect(**params)
+    # return conn
 
 
 
@@ -112,6 +112,7 @@ try:
     # execute a statement
     cur.execute(sqlCommands[0], ('yun', generate_password_hash('123456')))
     cur.execute(sqlCommands[0], ('song', generate_password_hash('123456')))
+    cur.execute(sqlCommands[0], ('test', generate_password_hash('123456')))
     userId = cur.fetchone()[0]
     cur.execute(sqlCommands[1], ('1', 'title', 'name', 'date', 'time', 'longitude', 'latitude', 'average_noise_level', 'average_light_intensity', 'wind_direction', 'wind_speed', 'cloud_cover', 'cloud_type', 'cloud_photo_id', 'visibility', 'traffic_count', 'temperature', 'humidity', 'collecting_photo_id', 'note_of_anomaly', 'air_pollution'))
     cur.execute(sqlCommands[1], ('1', 'title', 'name', 'date', 'time', 'longitude', 'latitude', 'average_noise_level', 'average_light_intensity', 'wind_direction', 'wind_speed', 'cloud_cover', 'cloud_type', 'cloud_photo_id', 'visibility', 'traffic_count', 'temperature', 'humidity', 'collecting_photo_id', 'note_of_anomaly', 'air_pollution'))

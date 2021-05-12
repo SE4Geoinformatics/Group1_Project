@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    {% if page_title %}
+    <title>{{ page_title }} - iUrban</title>
+    {% else %}
+    <title>Welcome to iUrban</title>
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/bootstrap-5.0.0-beta3-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <header class="p-3 bg-purple text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/home" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    iUrban
+                </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                </ul>
+
+                <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control hidden" placeholder="Search...">
+                </form> -->
+                {% if session['user_id'] %}
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <div class="text-end">
+                    <!-- Button trigger login modal -->
+                    <button type="button" class="btn btn-light text-dark me-2" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">
+                        Login
+                    </button>
+
+                    <!-- Login Modal -->
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark" id="loginModalLabel">Login</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/login" method="POST"
+                                        class="p-5 border-0 rounded-3 bg-white text-dark">
+                                        <div class="form-floating mb-3">
+                                            <input name="username" type="text" class="form-control" id="floatingInput"
+                                                placeholder="Account" />
+                                            <label for="floatingInput">Account</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input name="password" type="password" class="form-control"
+                                                id="floatingPassword" placeholder="Password" />
+                                            <label for="floatingPassword">Password</label>
+                                        </div>
+                                        <div class="checkbox mb-3">
+                                            <label>
+                                                <!-- <input type="checkbox" value="remember-me"> Remember me -->
+                                                {% for message in get_flashed_messages() %}
+                                                <label style="color:red">{{message}}</label>
+                                                {% endfor %}
+                                            </label>
+                                        </div>
+                                        <button class="w-100 btn btn-lg btn-purple" type="submit">Log in</button>
+                                        <hr class="my-4">
+                                        <small class="text-muted">Don't have a Account? <a href="#">Click here
+                                                to
+                                                Register.</a></small>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Button trigger register modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#registerModal">
+                        Sign-up
+                    </button>
+
+                    <!-- Register Modal -->
+                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark" id="registerModalLabel">Register</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/register" method="POST"
+                                        class="p-5 border-0 rounded-3 bg-white text-dark">
+                                        <div class="form-floating mb-3">
+                                            <input name="username" type="text" class="form-control" id="floatingInput"
+                                                placeholder="Account" />
+                                            <label for="floatingInput">Account</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input name="password" type="password" class="form-control"
+                                                id="floatingPassword" placeholder="Password" />
+                                            <label for="floatingPassword">Password</label>
+                                        </div>
+                                        <div class="checkbox mb-3">
+                                            <label>
+                                                <!-- <input type="checkbox" value="remember-me"> Remember me -->
+                                                {% for message in get_flashed_messages() %}
+                                                <label style="color:red">{{message}}</label>
+                                                {% endfor %}
+                                            </label>
+                                        </div>
+                                        <button class="w-100 btn btn-lg btn-purple" type="submit">Register</button>
+                                        <hr class="my-4">
+                                        <small class="text-muted">Having a Account? <a href="#">Click here to Log
+                                                in.</a></small>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="/static/bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
