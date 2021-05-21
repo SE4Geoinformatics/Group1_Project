@@ -2,31 +2,16 @@
 {% block content %}
 <link href="/static/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="/static/css/fixedColumns.bootstrap.min.css" rel="stylesheet">
-<div class="row">
-    <div class="nav-scroller bg-body shadow-sm">
-        <nav class="nav nav-underline" aria-label="Secondary navigation">
-            <a class="nav-link active" aria-current="page" href="#">
-                <i class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"></i>Table</a>
-            <a class="nav-link" href="#">
-                Total
-                <span class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
-            </a>
-            <a class="nav-link" href="#">Link</a>
-            <a class="nav-link" href="#">Link</a>
-            <a class="nav-link" href="#">Link</a>
-        </nav>
-    </div>
-</div>
+
 <div class="container">
     <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
-        <img class="me-3" src="/static/img/person-circle.svg" alt="" width="48" height="38">
+        <img class="me-3" src="/static/images/table.svg" alt="" width="48" height="38">
         <div class="lh-1">
             <h1 class="h6 mb-0 text-white lh-1">Environmental Data</h1>
             <small>Since 2020</small>
         </div>
     </div>
-</div>
-<div class="container">
+
     <div class="table-responsive">
         <table id="tableExample" class="table display" style="transform-style:preserve-3d;">
             <thead>
@@ -64,20 +49,22 @@
                 {% for t in tData %}
                 <tr>
                     <th><a class="nav-link" href="#"><i class="bi bi-eye">{{t.author_id}}</i></th>
+                    {% if t[1] == session['user_id'] %}
                     <th>
-                        {% if t[1] == session['user_id'] %}
                         <a class="nav-link" href="#"><i class="bi bi-pencil"></i>
-                            {% else %}
-                            <a class="nav-link disabled" href="#"><i class="bi bi-pencil"></i>
-                                {% endif %}
                     </th>
                     <th>
-                        {% if t[1] == session['user_id'] %}
-                        <a class="nav-link" href="#"><i class="bi bi-trash"></i>
-                            {% else %}
-                            <a class="nav-link disabled" href="#"><i class="bi bi-trash"></i>
-                                {% endif %}
+                        <a class="nav-link" href="/deleteData/{{t[0]}}"><i class="bi bi-trash"></i>
                     </th>
+                    {% else %}
+                    <th>
+                        <a class="nav-link disabled" href="#"><i class="bi bi-pencil"></i>
+                    </th>
+                    <th>
+                        <a class="nav-link disabled" href="#"><i class="bi bi-trash"></i>
+                    </th>
+                    {% endif %}
+
 
                     <td>{{ t[0] }}</td>
                     <td>{{ t[1] }}</td>
@@ -103,7 +90,7 @@
                     <td>{{ t[21] }}</td>
                     <td>{{ t[22] }}</td>
                     <td>
-                        <a href="/comment/{{t[0]}}" class="nav-link px-2">Link</a>
+                        <a href="/comment/{{t[0]}}" class="nav-link px-2">View</a>
                     </td>
                 </tr>
                 {% endfor %}

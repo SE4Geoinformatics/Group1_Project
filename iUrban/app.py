@@ -12,7 +12,8 @@ from flask import (
     redirect,
     url_for,
     request,
-    flash
+    flash,
+    g
 )
 from werkzeug.security import (
     check_password_hash,
@@ -25,31 +26,70 @@ from psycopg2 import connect
 
 from dbConfig import config
 
+
+from tkinter import messagebox
+
 app = Flask(__name__, template_folder='templates')
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
+
+def get_dbConn():
+    if 'dbConn' not in g:
+        myFile = open(
+            "E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+        connStr = myFile.readline()
+        g.dbConn = connect(connStr)
+
+    return g.dbConn
+
+
+def close_dbConn():
+    if 'dbConn' in g:
+        g.dbComm.close()
+        g.pop('dbConn')
+
+
 def connect_db():
     # # use the dbConfig.txt
 
-    # # use this code in VS Code
-    myFile = open("E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    # # # use this code in VS Code
+    myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
-    # # use this code in Spyder
-    # myFile = open("dbConfig.txt", "r", encoding='utf-8')
+    # # # use this code in Spyder
+    # # myFile = open("dbConfig.txt", "r", encoding='utf-8')
 
     connStr = myFile.readline()
     conn = connect(connStr)
     return conn
 
-
-
+    #*************************************************************
     # # use the dbConfig.py
-    # params = config()    
+    # params = config()
     # print('Connecting to the PostgreSQL database...')
     # conn = connect(**params)
     # return conn
+
+
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        conn = connect_db()
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM TUser WHERE user_id = %s', (user_id,)
+        )
+        g.user = cur.fetchone()
+        cur.close()
+        conn.commit()
+    if g.user is None:
+        return False
+    else:
+        return True
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -114,6 +154,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user[0]
+            load_logged_in_user()
             return redirect(url_for('index'))
 
         flash(error)
@@ -132,7 +173,8 @@ def base():
 
 @app.route('/test')
 def test():
-    return render_template('test.html')
+    messagebox.showinfo("提示", "我是一个提示框")
+    return render_template('index.html')
 
 
 @app.route('/')
@@ -155,9 +197,66 @@ def table():
 
     return render_template('table.html', page_title='Table', tData=tData)
 
+
+@app.route('/addData', methods=('GET', 'POST'))
+def addData():
+    # if load_logged_in_user():
+    if request.method == 'POST':
+        author_id = session['user_Id']
+        name = request.form.get('name')
+        date = request.form.get('date')
+        time = request.form.get('time')
+        longitude = request.form.get('longitude')
+        latitude = request.form.get('latitude')
+        average_noise_level = request.form.get('average_noise_level')
+        average_light_intensity = request.form.get('average_light_intensity')
+        wind_direction = request.form.get('wind_direction')
+        wind_speed = request.form.get('wind_speed')
+        cloud_cover = request.form.get('cloud_cover')
+        cloud_type = request.form.get('cloud_type')
+        cloud_photo_id = request.form.get('cloud_photo_id')
+        visibility = request.form.get('visibility')
+        traffic_count = request.form.get('traffic_count')
+        temperature = request.form.get('temperature')
+        humidity = request.form.get('humidity')
+        note_of_anomaly = request.form.get('note_of_anomaly')
+        air_pollution = request.form.get('air_pollution')
+
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+            'INSERT INTO TData (author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (
+                author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution)
+        )
+        cur.close()
+        conn.commit()
+        return redirect(url_for('table'))
+
+    return render_template('addData.html', page_title='Index')
+
+
+@app.route('/deleteData/<int:data_id>')
+def deleteData(data_id):
+    data_id = data_id
+
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'delete FROM TComment WHERE data_id = %s', (data_id,)
+    )
+    cur.execute(
+        'delete FROM TData WHERE data_id = %s', (data_id,)
+    )
+    cur.close()
+    conn.commit()
+
+    return redirect(url_for('table'))
+
+
 @app.route('/comment/<int:data_id>')
 def comment(data_id):
     data_id = data_id
+
     conn = connect_db()
     cur = conn.cursor()  # create a cursor
     cur.execute(
@@ -168,7 +267,43 @@ def comment(data_id):
     cur.close()
     conn.commit()
 
-    return render_template('comment.html', page_title=data_id, tComment=tComment)
+    return render_template('comment.html', page_title=data_id, tComment=tComment, data_id=data_id)
+
+
+@app.route('/addComment/<int:data_id>', methods=['GET', 'POST'])
+def addComment(data_id):
+    data_id = data_id
+    author_id = session['user_id']
+    body = request.form.get('comment_body')
+
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'INSERT INTO TComment (author_id, data_id, body) VALUES (%s, %s, %s)', (
+            author_id, data_id, body)
+    )
+
+    cur.close()
+    conn.commit()
+
+    return redirect(url_for('comment', data_id=data_id))
+
+
+@app.route('/deleteComment/<int:comment_id>/<int:data_id>')
+def deleteComment(comment_id, data_id):
+    comment_id = comment_id
+    data_id = data_id
+
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'delete FROM TComment WHERE comment_id = %s', (comment_id,)
+    )
+    cur.close()
+    conn.commit()
+
+    return redirect(url_for('comment', data_id=data_id))
+
 
 if __name__ == '__main__':
     app.run(

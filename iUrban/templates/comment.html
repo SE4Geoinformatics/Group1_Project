@@ -1,31 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row">
-    <div class="nav-scroller bg-body shadow-sm">
-        <nav class="nav nav-underline" aria-label="Secondary navigation">
-            <a class="nav-link active" aria-current="page" href="#">
-                <i class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"></i>Table</a>
-            <a class="nav-link" href="#">
-                Total
-                <span class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
-            </a>
-            <a class="nav-link" href="#">Link</a>
-            <a class="nav-link" href="#">Link</a>
-            <a class="nav-link" href="#">Link</a>
-        </nav>
-    </div>
-</div>
+
 <div class="container">
     <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
-        <img class="me-3" src="/static/img/person-circle.svg" alt="" width="48" height="38">
+        <img class="me-3" src="/static/images/chat.svg" alt="" width="48" height="38">
+
         <div class="lh-1">
-            <h1 class="h6 mb-0 text-white lh-1">Environmental Data</h1>
+            <h1 class="h6 mb-0 text-white lh-1">Comments</h1>
             <small>Since 2020</small>
         </div>
     </div>
 
     <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <h6 class="border-bottom pb-2 mb-0">Suggestions</h6>
+        <h6 class="border-bottom pb-2 mb-0">data_id: </h6>
         {% for t in tComment %}
         <div class="d-flex text-muted pt-3">
             <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"
@@ -38,21 +25,51 @@
 
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
                 <div class="d-flex justify-content-between">
-                    <strong class="text-gray-dark">{{ t[0] }}</strong>
-                    <a href="#">Follow</a>
+                    <strong class="text-gray-dark">comment_id: {{ t[0] }}</strong>                   
                 </div>
-                <span class="d-block">{{t[1]}}</span>
-                <span class="d-block">{{t[2]}}</span>
-                <span class="d-block">{{t[3]}}</span>
-                <span class="d-block">{{t[4]}}</span>
+                <span class="d-block">author_id: {{t[1]}}</span>
+                <span class="d-block">data_id: {{t[2]}}</span>
+                <span class="d-block">created_date: {{t[3]}}</span>
+                <span class="d-block">body: {{t[4]}}</span>
+                {% if t[1] == session['user_id'] %}
+                <span class="d-block">
+                    <a href="#"><i class="bi bi-pencil"></i></a>
+                </span>
+                <span class="d-block">
+                    <a href="/deleteComment/{{t[0]}}/{{t[2]}}"><i class="bi bi-trash"></i></a>
+                </span>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
-        <small class="d-block text-end mt-3">
-            <a href="#">All suggestions</a>
-        </small>
     </div>
-    </main>
+
+    <div>
+
+        <form action="/addComment/{{data_id}}" method="POST" class="was-validated">
+            {% if session['user_id'] %}
+            <div class="mb-3">
+                <label for="validationTextarea" class="form-label">Write your comment</label>
+                <textarea class="form-control is-invalid" id="validationTextarea" name="comment_body"
+                    placeholder="Required" required></textarea>
+                <div class="invalid-feedback">
+                    Please enter a message in the textarea.
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Submit form</button>
+            </div>
+            {% else %}
+            <div class="mb-3">
+                <label for="validationTextarea" class="form-label">Write your comment</label>
+                <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Comment after login"
+                    readonly></textarea>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+
+</div>
 
 
-    {% endblock %}
+{% endblock %}

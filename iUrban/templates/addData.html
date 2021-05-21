@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+    <img class="me-3" src="/static/images/file-earmark-plus.svg" alt="" width="48" height="38">
+    <div class="lh-1">
+      <h1 class="h6 mb-0 text-white lh-1">Add Environmental Data</h1>
+      <small>Since 2020</small>
+    </div>
+  </div>
+
+  <div class="row g-5">
+    <div class="col-lg-12">
+      <h4 class="mb-3">Add Environmental Data</h4>
+      <form action="/add_tdata" method="POST" class="needs-validation" novalidate>
+        <div class="row g-3">
+
+          <!-- <div class="col-lg-12">
+            <label class="form-label">author_id</label>
+            <input type="label" class="form-control" name="author_id" placeholder="" value="{{session['user_id']}}"
+              required>
+          </div> -->
+
+          <div class="col-lg-12">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Name is required.
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="form-label">Date</label>
+            <div class="input-group has-validation">
+              <input type="date" class="form-control" name="date" placeholder="dd/mm/yy" required>
+              <div class="invalid-feedback">
+                Date is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="form-label">Time <span class="text-muted">(Optional)</span></label>
+            <input type="time" class="form-control" name="time" placeholder="">
+            <div class="invalid-feedback">
+              Time is required.
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="form-label">Latitude</label>
+            <input type="text" class="form-control" name="latitude" placeholder="" required>
+            <div class="invalid-feedback">
+              Latitude is required.
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="form-label">Longitude</label>
+            <input type="text" class="form-control" name="longitude" placeholder="" required>
+            <div class="invalid-feedback">
+              Longitude is required.
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="form-label">Average noise level</label>
+            <input type="number" class="form-control" name="average_noise_level" placeholder="" required>
+            <div class="invalid-feedback">
+              Average noise level is required.
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <label class="form-label">Average light intensity</label>
+            <input type="text" class="form-control" name="average_light_intensity" placeholder="" required>
+            <div class="invalid-feedback">
+              Average light intensity is required.
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- <h4 class="mb-3">Payment</h4> -->
+        <div class="col-lg-12">
+          <label class="form-label">Wind direction</label>
+          <input type="text" class="form-control" name="wind_direction" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            Wind direction is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">wind_speed</label>
+          <input type="text" class="form-control" name="wind_speed" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            wind_speed is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">cloud_cover</label>
+          <input type="text" class="form-control" name="cloud_cover" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            cloud_cover is required.
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <label class="form-label">cloud_type</label>
+          <input type="text" class="form-control" name="cloud_type" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            cloud_type is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">cloud_photo_id</label>
+          <input type="text" class="form-control" name="cloud_photo_id" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            cloud_photo_id is required.
+          </div>
+        </div>
+
+
+        <div class="col-lg-12">
+          <label class="form-label">visibility</label>
+          <input type="text" class="form-control" name="visibility" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            visibility is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">traffic_count</label>
+          <input type="text" class="form-control" name="traffic_count" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            traffic_count is required.
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <label class="form-label">temperature</label>
+          <input type="text" class="form-control" name="temperature" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            temperature is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">humidity</label>
+          <input type="text" class="form-control" name="humidity" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            humidity is required.
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <label class="form-label">note_of_anomaly</label>
+          <input type="text" class="form-control" name="note_of_anomaly" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            note_of_anomaly is required.
+          </div>
+        </div>
+        
+        <div class="col-lg-12">
+          <label class="form-label">air_pollution</label>
+          <input type="text" class="form-control" name="air_pollution" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            air_pollution is required.
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Confirm</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
