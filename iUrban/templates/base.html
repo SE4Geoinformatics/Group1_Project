@@ -45,9 +45,9 @@
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Your Profile </a></li>
+                    <li><a class="dropdown-item" href="#">Your Data</a></li>
+                    <li><a class="dropdown-item" href="#">Your Comment</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -180,6 +180,17 @@
             </div>
         </div>
         {% endif %}
+
+        {% for message in get_flashed_messages() %}
+        <div class="row">
+            <div class="nav-scroller bg-body shadow-sm">
+                <nav class="nav nav-underline" aria-label="Secondary navigation">
+                    <div class="flash">{{ message }}</div>
+                </nav>
+            </div>
+        </div>        
+        {% endfor %}
+
         {% block content %}{% endblock %}
 
         <hr class="featurette-divider">

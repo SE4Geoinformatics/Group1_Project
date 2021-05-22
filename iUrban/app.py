@@ -185,54 +185,74 @@ def index():
 
 @app.route('/table')
 def table():
-    conn = connect_db()
-    cur = conn.cursor()  # create a cursor
-    cur.execute(
-        """SELECT * FROM TData"""
-    )
+    if request.method == 'POST':
+        title = request.form.get('title')
+        condition = request.form.get('condition')
+        
+        sql = aa
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+           'SELECT * FROM TData WHERE %s', (sql,)
+        )
 
-    tData = cur.fetchall()
-    cur.close()
-    conn.commit()
+        tData = cur.fetchall()
+        cur.close()
+        conn.commit()
+
+    else:
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+            """SELECT * FROM TData"""
+        )
+
+        tData = cur.fetchall()
+        cur.close()
+        conn.commit()
 
     return render_template('table.html', page_title='Table', tData=tData)
 
 
 @app.route('/addData', methods=('GET', 'POST'))
 def addData():
-    # if load_logged_in_user():
-    if request.method == 'POST':
-        author_id = session['user_Id']
-        name = request.form.get('name')
-        date = request.form.get('date')
-        time = request.form.get('time')
-        longitude = request.form.get('longitude')
-        latitude = request.form.get('latitude')
-        average_noise_level = request.form.get('average_noise_level')
-        average_light_intensity = request.form.get('average_light_intensity')
-        wind_direction = request.form.get('wind_direction')
-        wind_speed = request.form.get('wind_speed')
-        cloud_cover = request.form.get('cloud_cover')
-        cloud_type = request.form.get('cloud_type')
-        cloud_photo_id = request.form.get('cloud_photo_id')
-        visibility = request.form.get('visibility')
-        traffic_count = request.form.get('traffic_count')
-        temperature = request.form.get('temperature')
-        humidity = request.form.get('humidity')
-        note_of_anomaly = request.form.get('note_of_anomaly')
-        air_pollution = request.form.get('air_pollution')
+    if load_logged_in_user():
+        if request.method == 'POST':
+            author_id = session['user_Id']
+            name = request.form.get('name')
+            date = request.form.get('date')
+            time = request.form.get('time')
+            longitude = request.form.get('longitude')
+            latitude = request.form.get('latitude')
+            average_noise_level = request.form.get('average_noise_level')
+            average_light_intensity = request.form.get('average_light_intensity')
+            wind_direction = request.form.get('wind_direction')
+            wind_speed = request.form.get('wind_speed')
+            cloud_cover = request.form.get('cloud_cover')
+            cloud_type = request.form.get('cloud_type')
+            cloud_photo_id = request.form.get('cloud_photo_id')
+            visibility = request.form.get('visibility')
+            traffic_count = request.form.get('traffic_count')
+            temperature = request.form.get('temperature')
+            humidity = request.form.get('humidity')
+            note_of_anomaly = request.form.get('note_of_anomaly')
+            air_pollution = request.form.get('air_pollution')
 
-        conn = connect_db()
-        cur = conn.cursor()  # create a cursor
-        cur.execute(
-            'INSERT INTO TData (author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (
-                author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution)
-        )
-        cur.close()
-        conn.commit()
-        return redirect(url_for('table'))
+            conn = connect_db()
+            cur = conn.cursor()  # create a cursor
+            cur.execute(
+                'INSERT INTO TData (author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (
+                    author_id, name, date, time, longitude, latitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution)
+            )
+            cur.close()
+            conn.commit()
+            return redirect(url_for('table'))
 
-    return render_template('addData.html', page_title='Index')
+        return render_template('addData.html', page_title='Add Data')
+    else:
+        error = 'Only logged in users can add data!'
+        flash(error)
+        return render_template('index.html', page_title='Index')
 
 
 @app.route('/deleteData/<int:data_id>')

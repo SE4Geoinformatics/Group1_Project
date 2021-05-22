@@ -14,22 +14,15 @@
       <h4 class="mb-3">Add Environmental Data</h4>
       <form action="/add_tdata" method="POST" class="needs-validation" novalidate>
         <div class="row g-3">
-
-          <!-- <div class="col-lg-12">
-            <label class="form-label">author_id</label>
-            <input type="label" class="form-control" name="author_id" placeholder="" value="{{session['user_id']}}"
-              required>
-          </div> -->
-
           <div class="col-lg-12">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="name" placeholder="" value="" required>
+            <input type="text" class="form-control" name="name" placeholder="" value="" maxlength="40" required>
             <div class="invalid-feedback">
               Name is required.
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-6">
             <label class="form-label">Date</label>
             <div class="input-group has-validation">
               <input type="date" class="form-control" name="date" placeholder="dd/mm/yy" required>
@@ -39,7 +32,7 @@
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-6">
             <label class="form-label">Time <span class="text-muted">(Optional)</span></label>
             <input type="time" class="form-control" name="time" placeholder="">
             <div class="invalid-feedback">
@@ -47,14 +40,14 @@
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-6">
             <label class="form-label">Latitude</label>
             <input type="text" class="form-control" name="latitude" placeholder="" required>
             <div class="invalid-feedback">
               Latitude is required.
             </div>
           </div>
-          <div class="col-lg-12">
+          <div class="col-lg-6">
             <label class="form-label">Longitude</label>
             <input type="text" class="form-control" name="longitude" placeholder="" required>
             <div class="invalid-feedback">
@@ -62,119 +55,178 @@
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-3">
             <label class="form-label">Average noise level</label>
-            <input type="number" class="form-control" name="average_noise_level" placeholder="" required>
+            <input type="number" min="0" max="100" class="form-control" name="average_noise_level" placeholder="0-100"
+              required>
             <div class="invalid-feedback">
               Average noise level is required.
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-3">
             <label class="form-label">Average light intensity</label>
-            <input type="text" class="form-control" name="average_light_intensity" placeholder="" required>
+            <input type="number" min="1" max="10000" class="form-control" name="average_light_intensity"
+              placeholder="1-10000" required>
             <div class="invalid-feedback">
               Average light intensity is required.
             </div>
           </div>
-        </div>
 
-        <hr class="my-4">
+          <div class="col-lg-3">
+            <label class="form-label">Wind direction</label>
+            <select class="form-select" aria-label="Default select example" name="wind_direction" value="" required>
+              <option value="-">-</option>
+              <option value="Calm">Calm</option>
+              <option value="E">East</option>
+              <option value="N">North</option>
+              <option value="S">South</option>
+              <option value="W">West</option>
+              <option value="NE">North East</option>
+              <option value="NW">North West</option>
+              <option value="SW">South West</option>
+              <option value="SE">South East</option>
+            </select>
+            <div class="invalid-feedback">
+              Wind direction is required.
+            </div>
+          </div>
 
-        <!-- <h4 class="mb-3">Payment</h4> -->
-        <div class="col-lg-12">
-          <label class="form-label">Wind direction</label>
-          <input type="text" class="form-control" name="wind_direction" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            Wind direction is required.
+          <div class="col-lg-3">
+            <label class="form-label">wind_speed</label>
+            <select class="form-select" aria-label="Default select example" name="wind_speed" value="" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+            <div class="invalid-feedback">
+              wind_speed is required.
+            </div>
           </div>
-        </div>
 
-        <div class="col-lg-12">
-          <label class="form-label">wind_speed</label>
-          <input type="text" class="form-control" name="wind_speed" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            wind_speed is required.
+          <div class="col-lg-3">
+            <label class="form-label">cloud_cover</label>
+            <select class="form-select" aria-label="Default select example" name="cloud_cover" value="" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+            <div class="invalid-feedback">
+              cloud_cover is required.
+            </div>
           </div>
-        </div>
+          <div class="col-lg-3">
+            <label class="form-label">cloud_type</label>
+            <select class="form-select" aria-label="Default select example" name="cloud_type" value="" required>
+              <option value="-">There were no clouds</option>
+              <option value="stratus">stratus</option>
+              <option value="Few">Few</option>
+              <option value="Scattered">Scattered</option>
+              <option value="Nimbostratus">Nimbostratus</option>
+            </select>
+            <div class="invalid-feedback">
+              cloud_type is required.
+            </div>
+          </div>       
 
-        <div class="col-lg-12">
-          <label class="form-label">cloud_cover</label>
-          <input type="text" class="form-control" name="cloud_cover" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            cloud_cover is required.
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <label class="form-label">cloud_type</label>
-          <input type="text" class="form-control" name="cloud_type" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            cloud_type is required.
-          </div>
-        </div>
 
-        <div class="col-lg-12">
-          <label class="form-label">cloud_photo_id</label>
-          <input type="text" class="form-control" name="cloud_photo_id" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            cloud_photo_id is required.
+          <div class="col-lg-3">
+            <label class="form-label">visibility</label>
+            <select class="form-select" aria-label="Default select example" name="visibility" value="" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+            <div class="invalid-feedback">
+              visibility is required.
+            </div>
           </div>
-        </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">traffic_count</label>
+            <input type="number" min="1" max="100" class="form-control" name="traffic_count" placeholder="1-100"
+              value="" required>
+            <div class="invalid-feedback">
+              traffic_count is required.
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">temperature ℃</label>
+            <input type="number" min="1" max="50" class="form-control" name="temperature" placeholder="1-50℃" value=""
+              required>
+            <div class="invalid-feedback">
+              temperature is required.
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">humidity</label>
+            <input type="number" min="1" max="100" class="form-control" name="humidity" placeholder="1-100" value=""
+              required>
+            <div class="invalid-feedback">
+              humidity is required.
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">note_of_anomaly</label>
+            <input type="text" class="form-control" name="note_of_anomaly" placeholder="Max 50 characters" value="" maxlength="50">
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Air pollution (number of particles ) PM only.</label>
+            <select class="form-select" aria-label="Default select example" name="air_pollution" value="" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            <div class="invalid-feedback">
+              air_pollution is required.
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">cloud_photo_id</label>
+            <input type="text" class="form-control" name="cloud_photo_id" placeholder="" value="">
+          </div>
+
+          <hr class="my-4">
+          <div class="row">
+            <div class="col-lg-2"><button class="w-100 btn btn-primary btn-lg" type="submit">Confirm</button></div>
+            <div class="col-lg-2"><button class="w-100 btn btn-primary btn-lg" type="reset">reset</button></div>
+          </div>
 
 
-        <div class="col-lg-12">
-          <label class="form-label">visibility</label>
-          <input type="text" class="form-control" name="visibility" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            visibility is required.
-          </div>
-        </div>
-
-        <div class="col-lg-12">
-          <label class="form-label">traffic_count</label>
-          <input type="text" class="form-control" name="traffic_count" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            traffic_count is required.
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <label class="form-label">temperature</label>
-          <input type="text" class="form-control" name="temperature" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            temperature is required.
-          </div>
-        </div>
-
-        <div class="col-lg-12">
-          <label class="form-label">humidity</label>
-          <input type="text" class="form-control" name="humidity" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            humidity is required.
-          </div>
-        </div>
-
-        <div class="col-lg-12">
-          <label class="form-label">note_of_anomaly</label>
-          <input type="text" class="form-control" name="note_of_anomaly" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            note_of_anomaly is required.
-          </div>
-        </div>
-        
-        <div class="col-lg-12">
-          <label class="form-label">air_pollution</label>
-          <input type="text" class="form-control" name="air_pollution" placeholder="" value="" required>
-          <div class="invalid-feedback">
-            air_pollution is required.
-          </div>
-        </div>
-        <hr class="my-4">
-
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Confirm</button>
       </form>
     </div>
   </div>
 </div>
-
+<script src="/static/js/form-validation.js"></script>
 
 {% endblock %}
