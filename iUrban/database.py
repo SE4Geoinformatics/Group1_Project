@@ -66,12 +66,12 @@ commands = (
         wind_speed INTEGER NOT NULL,
         cloud_cover INTEGER NOT NULL,
         cloud_type VARCHAR(16) NOT NULL,
-        cloud_photo_id VARCHAR(64),
+        cloud_photo_id VARCHAR(225),
         visibility INTEGER NOT NULL,
         traffic_count INTEGER NOT NULL,
         temperature INTEGER NOT NULL,
         humidity INTEGER NOT NULL,
-        note_of_anomaly VARCHAR(255),
+        note_of_anomaly VARCHAR(50),
         air_pollution INTEGER,
         FOREIGN KEY (author_id) REFERENCES TUser (user_id)
         )
