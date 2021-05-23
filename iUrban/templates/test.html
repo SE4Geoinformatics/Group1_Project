@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+
 <form action="/queryData" method="POST">
     <div class="row">
         <div class="col-lg-3">
@@ -26,16 +28,16 @@
         <div class="col-lg-3">
             <label class="form-label">Select the condition</label>
             <select class="form-select" aria-label="Default select example" name="dcondition" value="" required>
-                <option value="=">=</option>
-                <option value=">">></option>
-                <option value="<"><</option>
+                <option value="="> = </option>
+                <option value=">"> > </option>
+                <option value="<"> < </option>
             </select>
             <div class="invalid-feedback">
                 visibility is required.
             </div>
         </div>
         <div class="col-lg-3">
-            <label class="form-label">Select the condition</label>
+            <label class="form-label">Select the parameter</label>
             <input type="text" class="form-control" name="dpara" placeholder="" required>
             <div class="invalid-feedback">
                 visibility is required.
@@ -44,9 +46,14 @@
         <div class="col-lg-3">
             <label class="form-label"></label>
             <div class=""><button class="w-100 btn btn-primary btn-lg" type="submit">Confirm</button></div>
-          </div>
+        </div>
     </div>
-
-    
 </form>
+
 {% endblock %}
+
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+    var modalToggle = document.getElementById('loginModal') // relatedTarget
+    myModal.show(modalToggle)
+</script>

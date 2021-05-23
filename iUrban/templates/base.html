@@ -180,17 +180,7 @@
                 </nav>
             </div>
         </div>
-        {% endif %}
-
-        {% for message in get_flashed_messages() %}
-        <div class="row">
-            <div class="nav-scroller bg-body shadow-sm">
-                <nav class="nav nav-underline" aria-label="Secondary navigation">
-                    <div class="flash"><label style="color:red">{{message}}</label></div>
-                </nav>
-            </div>
-        </div>        
-        {% endfor %}
+        {% endif %}       
 
         {% block content %}{% endblock %}
 

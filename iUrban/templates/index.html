@@ -90,7 +90,7 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="text-center">
-                <img src="..." class="rounded" alt="...">
+                <img src="#" class="rounded" alt="...">
                 <h2>Heading</h2>
                 <p>Some representative placeholder content for the three columns of text below the carousel.
                     This is the first column.</p>
@@ -99,7 +99,7 @@
         </div>
         <div class="col-lg-3">
             <div class="text-center">
-                <img src="..." class="rounded" alt="...">
+                <img src="#" class="rounded" alt="...">
                 <h2>Heading</h2>
                 <p>Some representative placeholder content for the three columns of text below the carousel.
                     This is the first column.</p>
@@ -108,7 +108,7 @@
         </div>
         <div class="col-lg-3">
             <div class="text-center">
-                <img src="..." class="rounded" alt="...">
+                <img src="#" class="rounded" alt="...">
                 <h2>Heading</h2>
                 <p>Some representative placeholder content for the three columns of text below the carousel.
                     This is the first column.</p>
@@ -117,7 +117,7 @@
         </div>
         <div class="col-lg-3">
             <div class="text-center">
-                <img src="..." class="rounded" alt="...">
+                <img src="#" class="rounded" alt="...">
                 <h2>Heading</h2>
                 <p>Some representative placeholder content for the three columns of text below the carousel.
                     This is the first column.</p>
@@ -125,10 +125,21 @@
 
         </div>
     </div>
-   
+
 </div>
 
 
+<script src="/static/js/jquery-3.5.1.min.js"></script>
+{% if get_flashed_messages() %}
+<script>
+    $(document).ready(function () {
+        var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+            keyboard: false
+        })
+        myModal.show()
+    })
+</script>
+{% endif %}
 
 
 {% endblock %}

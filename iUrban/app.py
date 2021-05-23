@@ -127,8 +127,10 @@ def register():
             conn.commit()
             return redirect(url_for('index'))
 
-        flash(error)
-        
+    else:
+         error = 'Please register!'
+    
+    flash(error)
     return render_template('index.html')
 
 
@@ -159,8 +161,10 @@ def login():
             load_logged_in_user()
             return redirect(url_for('index'))
 
-        flash(error)
-
+    else:
+        error = 'Please loging!'
+    
+    flash(error)
     return render_template('index.html')
 
 
