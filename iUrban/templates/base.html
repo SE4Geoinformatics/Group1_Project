@@ -94,7 +94,7 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Log in</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Don't have a Account? <a href="#" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#registerModal">Click here
+                                    <small class="text-muted">Don't have a Account? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal">Click here
                                             to
                                             Register.</a></small>
 
@@ -126,6 +126,7 @@
                             <div class="modal-body">
                                 <form action="/register" method="POST"
                                     class="p-5 border-0 rounded-3 bg-white text-dark">
+                                   
                                     <div class="form-floating mb-3">
                                         <input name="username" type="text" class="form-control" id="floatingInput"
                                             placeholder="Account" />
@@ -146,7 +147,7 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Register</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Having a Account? <a href="#" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
+                                    <small class="text-muted">Having a Account? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
                                             in.</a></small>
                                 </form>
                             </div>
@@ -174,7 +175,7 @@
                     <a class="nav-link disabled" href="#">Total<span class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
                     </a>
                     <a class="nav-link" href="/addData">Add Data</a>
-                    <a class="nav-link" href="/test">Query Data</a>
+                    <a class="nav-link" href="/table">Query Data</a>
                     <a class="nav-link" href="#">Link</a>
                 </nav>
             </div>
@@ -193,7 +194,8 @@
 
         {% block content %}{% endblock %}
 
-        <hr class="featurette-divider">
+        <!-- <hr class="featurette-divider"> -->
+        <br/>
     </main>
 
 

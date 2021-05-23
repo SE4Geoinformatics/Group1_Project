@@ -128,6 +128,8 @@ def register():
             return redirect(url_for('index'))
 
         flash(error)
+        
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -158,6 +160,8 @@ def login():
             return redirect(url_for('index'))
 
         flash(error)
+
+    return render_template('index.html')
 
 
 @app.route('/logout')
