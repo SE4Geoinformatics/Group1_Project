@@ -191,33 +191,41 @@ def index():
 
 @app.route('/table')
 def table():
-    if request.method == 'POST':
-        title = request.form.get('title')
-        condition = request.form.get('condition')
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        """SELECT * FROM TData"""
+    )
 
-        sql = aa
-        conn = connect_db()
-        cur = conn.cursor()  # create a cursor
-        cur.execute(
-            'SELECT * FROM TData WHERE %s', (sql,)
-        )
-
-        tData = cur.fetchall()
-        cur.close()
-        conn.commit()
-
-    else:
-        conn = connect_db()
-        cur = conn.cursor()  # create a cursor
-        cur.execute(
-            """SELECT * FROM TData"""
-        )
-
-        tData = cur.fetchall()
-        cur.close()
-        conn.commit()
+    tData = cur.fetchall()
+    cur.close()
+    conn.commit()
 
     return render_template('table.html', page_title='Table', tData=tData)
+
+@app.route('/queryData', methods=('GET', 'POST'))
+def queryData():
+    if request.method == 'POST':
+        dtitle = request.form.get('dtitle')
+        dcondition = request.form.get('dcondition')
+        dpara = request.form.get('dpara')
+
+       
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+            '''SELECT * FROM TData WHERE  '''+ dtitle + dcondition +'''%s''', (dpara,)
+        )
+
+        tData = cur.fetchall()
+        cur.close()
+        conn.commit()
+        
+        return render_template('table.html', page_title='Table', tData=tData)
+    else:
+        # error = 'Only logged in users can add data!'
+        # flash(error)
+        return render_template('index.html', page_title='Index')
 
 
 @app.route('/addData', methods=('GET', 'POST'))

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/queryData" method="POST">
+    <div class="row">
+        <div class="col-lg-3">
+            <label class="form-label">Select the title</label>
+            <select class="form-select" aria-label="Default select example" name="dtitle" value="" required>
+                <option value="data_id">Data_id</option>
+                <option value="name">Name</option>
+                <option value="average_noise_level">Average noise level</option>
+                <option value="average_light_intensity">Average light intensity</option>
+                <option value="wind_direction">Wind direction</option>
+                <option value="wind_speed">Wind speed (Beaufort scale)</option>
+                <option value="cloud_cover">Cloud cover</option>
+                <option value="cloud_type">Cloud type</option>
+                <option value="visibility">Visibility</option>
+                <option value="traffic_count">Traffic count</option>
+                <option value="temperature">Temperature</option>
+                <option value="humidity">Humidity</option>
+                <option value="air_pollution">Air pollution (number of particl</option>
+            </select>
+            <div class="invalid-feedback">
+                visibility is required.
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label">Select the condition</label>
+            <select class="form-select" aria-label="Default select example" name="dcondition" value="" required>
+                <option value="=">=</option>
+                <option value=">">></option>
+                <option value="<"><</option>
+            </select>
+            <div class="invalid-feedback">
+                visibility is required.
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label">Select the condition</label>
+            <input type="text" class="form-control" name="dpara" placeholder="" required>
+            <div class="invalid-feedback">
+                visibility is required.
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label"></label>
+            <div class=""><button class="w-100 btn btn-primary btn-lg" type="submit">Confirm</button></div>
+          </div>
+    </div>
+
+    
+</form>
+{% endblock %}
