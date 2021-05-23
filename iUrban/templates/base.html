@@ -68,9 +68,9 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title text-dark" id="loginModalLabel">Login</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <h5 class="modal-title text-dark" id="loginModalLabel">Login
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form action="/login" method="POST" class="p-5 border-0 rounded-3 bg-white text-dark">
@@ -94,7 +94,7 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Log in</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Don't have a Account? <a href="#">Click here
+                                    <small class="text-muted">Don't have a Account? <a href="#" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#registerModal">Click here
                                             to
                                             Register.</a></small>
 
@@ -146,7 +146,7 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Register</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Having a Account? <a href="#">Click here to Log
+                                    <small class="text-muted">Having a Account? <a href="#" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
                                             in.</a></small>
                                 </form>
                             </div>
@@ -185,7 +185,7 @@
         <div class="row">
             <div class="nav-scroller bg-body shadow-sm">
                 <nav class="nav nav-underline" aria-label="Secondary navigation">
-                    <div class="flash">{{ message }}</div>
+                    <div class="flash"><label style="color:red">{{message}}</label></div>
                 </nav>
             </div>
         </div>        

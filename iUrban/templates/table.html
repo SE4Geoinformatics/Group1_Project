@@ -11,7 +11,38 @@
             <small>Since 2020</small>
         </div>
     </div>
+    <!-- <div class="row">
+        <div class="col-lg-3">
+            <label class="form-label">Select the title</label>
+            <select class="form-select" aria-label="Default select example" name="qtitle" value="" required>
+                <option value="4">author_id</option>
+                <option value="4">Created Date</option>
+                <option value="4">Name</option>
+                <option value="4">Date</option>
+                <option value="4">Time</option>
+                <option value="4">latitude</option>
+                <option value="4">longitude</option>
+                <option value="4">Average noise level</option>
+                <option value="4">Average light intensity</option>
+                <option value="4">Wind direction</option>
+                <option value="4">Wind speed (Beaufort scale)</option>
+                <option value="4">Cloud cover</option>
+                <option value="4">Cloud type</option>
+                <option value="4">Photo of cloud conditions</option>
+                <option value="4">Visibility</option>
+                <option value="4">Traffic count</option>
+                <option value="4">Temperature</option>
+                <option value="4">Humidity</option>
+                <option value="4">Make a note of anything that</option>
+                <option value="4">Air pollution (number of particl</option>
+                <option value="4">Comment</option>
+            </select>
+            <div class="invalid-feedback">
+              visibility is required.
+            </div>
+          </div>
 
+    </div> -->
     <div class="table-responsive">
         <table id="tableExample" class="table display" style="transform-style:preserve-3d;">
             <thead>
@@ -21,7 +52,6 @@
                     <th>Delete</th>
                     <th>data_id</th>
                     <th>author_id</th>
-                    <th>title</th>
                     <th>Created Date</th>
                     <th>Name</th>
                     <th>Date</th>
@@ -39,7 +69,6 @@
                     <th>Traffic count</th>
                     <th>Temperature</th>
                     <th>Humidity</th>
-                    <th>Photo of you collecting data</th>
                     <th>Make a note of anything that</th>
                     <th>Air pollution (number of particl</th>
                     <th>Comment</th>
@@ -48,7 +77,10 @@
             <tbody id="myTable">
                 {% for t in tData %}
                 <tr>
-                    <th><a class="nav-link" href="#"><i class="bi bi-eye">{{t.author_id}}</i></th>
+                    <th><a class="nav-link" href="/viewData/{{t[0]}}" data-bs-toggle="modal"
+                            data-bs-target="#viewDataModal{{t[0]}}">
+                            <i class="bi bi-eye"></i>
+                    </th>
                     {% if t[1] == session['user_id'] %}
                     <th>
                         <a class="nav-link" href="#"><i class="bi bi-pencil"></i>
@@ -69,7 +101,7 @@
                     <td>{{ t[0] }}</td>
                     <td>{{ t[1] }}</td>
                     <td>{{ t[2] }}</td>
-                    <td>..</td>
+                    <td>{{ t[3] }}</td>
                     <td>{{ t[4] }}</td>
                     <td>{{ t[5] }}</td>
                     <td>{{ t[6] }}</td>
@@ -87,12 +119,109 @@
                     <td>{{ t[18] }}</td>
                     <td>{{ t[19] }}</td>
                     <td>{{ t[20] }}</td>
-                    <td>{{ t[21] }}</td>
-                    <td>{{ t[22] }}</td>
                     <td>
                         <a href="/comment/{{t[0]}}" class="nav-link px-2">View</a>
                     </td>
                 </tr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="viewDataModal{{t[0]}}" tabindex="-1"
+                    aria-labelledby="viewDataModalLabel{{t[0]}}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-fullscreen-md-down">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewDataModalLabel{{t[0]}}">Entry: {{t[0]}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid border border-dark">
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Question</div>
+                                        <div class="col-lg-4 md-auto">Answer</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Name</div>
+                                        <div class="col-lg-4 md-auto">{{t[3]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Date</div>
+                                        <div class="col-lg-4 md-auto">{{t[4]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Time</div>
+                                        <div class="col-lg-4 md-auto">{{t[5]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">latitude</div>
+                                        <div class="col-lg-4 md-auto">{{t[6]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">longitude</div>
+                                        <div class="col-lg-4 md-auto">{{t[7]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Average noise level</div>
+                                        <div class="col-lg-4 md-auto">{{t[8]}}</div>
+                                    </div>
+
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Average light intensity</div>
+                                        <div class="col-lg-4 md-auto">{{t[9]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Wind direction</div>
+                                        <div class="col-lg-4 md-auto">{{t[10]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Wind speed (Beaufort scale)</div>
+                                        <div class="col-lg-4 md-auto">{{t[11]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8  border-end">Cloud cover</div>
+                                        <div class="col-lg-4 md-auto">{{t[12]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Cloud type</div>
+                                        <div class="col-lg-4 md-auto">{{t[13]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Visibility</div>
+                                        <div class="col-lg-4 md-auto">{{t[15]}}</div>
+                                    </div>
+
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Traffic count</div>
+                                        <div class="col-lg-4 md-auto">{{t[16]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Temperature</div>
+                                        <div class="col-lg-4 md-auto">{{t[17]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Humidity</div>
+                                        <div class="col-lg-4 md-auto">{{t[18]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Make a note of anything that</div>
+                                        <div class="col-lg-4 md-auto">{{t[19]}}</div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col-lg-8 border-end">Air pollution (number of particl)</div>
+                                        <div class="col-lg-4 md-auto">{{t[20]}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-8 border-end">Comment</div>
+                                        <div class="col-lg-4 md-auto"><a href="/comment/{{t[0]}}" class="nav-link px-2">View</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
 
             </tbody>

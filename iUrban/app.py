@@ -38,7 +38,7 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 def get_dbConn():
     if 'dbConn' not in g:
         myFile = open(
-            "E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+            "E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -173,8 +173,14 @@ def base():
 
 @app.route('/test')
 def test():
-    messagebox.showinfo("提示", "我是一个提示框")
-    return render_template('index.html')
+
+    # return '''
+    # <form method="post">
+    # <p><input type=text name=username>
+    # <p><input type=submit value=Login>
+    # </form>
+    # '''
+    return render_template('test.html')
 
 
 @app.route('/')
@@ -188,12 +194,12 @@ def table():
     if request.method == 'POST':
         title = request.form.get('title')
         condition = request.form.get('condition')
-        
+
         sql = aa
         conn = connect_db()
         cur = conn.cursor()  # create a cursor
         cur.execute(
-           'SELECT * FROM TData WHERE %s', (sql,)
+            'SELECT * FROM TData WHERE %s', (sql,)
         )
 
         tData = cur.fetchall()
@@ -218,14 +224,15 @@ def table():
 def addData():
     if load_logged_in_user():
         if request.method == 'POST':
-            author_id = session['user_Id']
+            author_id = session['user_id']
             name = request.form.get('name')
             date = request.form.get('date')
             time = request.form.get('time')
             longitude = request.form.get('longitude')
             latitude = request.form.get('latitude')
             average_noise_level = request.form.get('average_noise_level')
-            average_light_intensity = request.form.get('average_light_intensity')
+            average_light_intensity = request.form.get(
+                'average_light_intensity')
             wind_direction = request.form.get('wind_direction')
             wind_speed = request.form.get('wind_speed')
             cloud_cover = request.form.get('cloud_cover')
