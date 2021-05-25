@@ -56,7 +56,8 @@ def connect_db():
 
     # # # use this code in VS Code
     myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-
+    # myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    
     # # # use this code in Spyder
     # # myFile = open("dbConfig.txt", "r", encoding='utf-8')
 
@@ -97,6 +98,7 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        user_email = request.form.get('user_email')
         error = None
 
         if not username:
@@ -120,16 +122,16 @@ def register():
             conn = connect_db()
             cur = conn.cursor()
             cur.execute(
-                'INSERT INTO TUser (user_name, user_password) VALUES (%s, %s)',
-                (username, generate_password_hash(password))
+                'INSERT INTO TUser (user_name, user_password, user_email) VALUES (%s, %s, %s)',
+                (username, generate_password_hash(password), user_email)
             )
             cur.close()
             conn.commit()
             return redirect(url_for('index'))
 
     else:
-         error = 'Please register!'
-    
+        error = 'Please register!'
+
     flash(error)
     return render_template('index.html')
 
@@ -163,7 +165,7 @@ def login():
 
     else:
         error = 'Please loging!'
-    
+
     flash(error)
     return render_template('index.html')
 
@@ -172,6 +174,87 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+
+@app.route('/resetPassword', methods=['GET', 'POST'])
+def resetPassword():
+    if load_logged_in_user():
+        session.clear()
+        return render_template('resetPassword.html')    
+    else:
+        return render_template('resetPassword.html')
+
+
+@app.route('/userProfile', methods=['GET', 'POST'])
+def userProfile():
+    if load_logged_in_user():
+        user_id = session.get('user_id')
+
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+            'SELECT user_name, user_email FROM TUser WHERE user_id = %s', (
+                user_id,)
+        )
+        TUser = cur.fetchall()
+        cur.close()  # close this cursor
+        conn.commit()
+
+        if request.method == 'POST':
+            newpassword1 = request.form.get('newpassword1')
+            newpassword2 = request.form.get('newpassword2')
+
+            if newpassword1 == newpassword2:
+                conn = connect_db()
+                cur = conn.cursor()  # create a cursor
+                cur.execute(
+                    'UPDATE TUser SET user_password=%s WHERE user_id = %s', (
+                        newpassword2, user_id,)
+                )
+                # TUser = cur.fetchall()
+                cur.close()  # close this cursor
+                conn.commit()
+
+                error = 'Edit successfully'
+                flash(error)
+                return render_template('userProfile.html', TUser=TUser)
+            else:
+                error = 'Two password entries are inconsistent!'
+                flash(error)
+                return render_template('userProfile.html', TUser=TUser)
+        else:
+            return render_template('userProfile.html', TUser=TUser)
+    else:
+        error = 'Please login!'
+        flash(error)
+        return render_template('index.html')
+
+
+@app.route('/deleteAccount', methods=['GET', 'POST'])
+def deleteAccount():
+    if load_logged_in_user():
+        user_id = session.get('user_id')
+
+        conn = connect_db()
+        cur = conn.cursor()  # create a cursor
+        cur.execute(
+            'DELETE FROM TComment WHERE author_id = %s', (user_id,)
+        )
+        cur.execute(
+            'DELETE FROM TComment WHERE data_id in (select data_id from TData where author_id = %s)', (
+                user_id,)
+        )
+        cur.execute(
+            'DELETE FROM TData WHERE author_id = %s', (user_id,)
+        )
+        cur.execute(
+            'DELETE FROM TUser WHERE user_id = %s', (user_id,)
+        )
+        cur.close()  # close this cursor
+        conn.commit()
+
+    session.clear()
+    return render_template('index.html')
 
 
 @app.route('/base')
@@ -211,6 +294,7 @@ def table():
 
     return render_template('table.html', page_title='Table', tData=tData)
 
+
 @app.route('/queryData', methods=('GET', 'POST'))
 def queryData():
     if request.method == 'POST':
@@ -218,17 +302,17 @@ def queryData():
         dcondition = request.form.get('dcondition')
         dpara = request.form.get('dpara')
 
-       
         conn = connect_db()
         cur = conn.cursor()  # create a cursor
         cur.execute(
-            '''SELECT * FROM TData WHERE  '''+ dtitle + dcondition +'''%s''', (dpara,)
+            '''SELECT * FROM TData WHERE  ''' +
+            dtitle + dcondition + '''%s''', (dpara,)
         )
 
         tData = cur.fetchall()
         cur.close()
         conn.commit()
-        
+
         return render_template('table.html', page_title='Table', tData=tData)
     else:
         # error = 'Only logged in users can add data!'

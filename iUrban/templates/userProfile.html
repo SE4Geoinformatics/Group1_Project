@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+    <img class="me-3" src="/static/images/person-bounding-box.svg" alt="" width="48" height="38">
+    <div class="lh-1">
+      <h1 class="h6 mb-0 text-white lh-1">User Profile Data</h1>
+      <small>Since 2020</small>
+    </div>    
+  </div>
+  <a href="/deleteAccount"><button class="btn-danger">Delete your account from application</button></a>
+  <form action="/userProfile" method="POST">
+
+    {% for t in TUser %}
+    <div class="mb-3">
+      <label for="exampleAccount" class="form-label">Account</label>
+      <input type="text" class="form-control" id="exampleAccount" value="{{ t[0] }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleEmail" class="form-label">E-mail</label>
+      <span class="small">(Keep in mind, it will be used to verify your account for sensitive operations)</span>
+      <input type="email" class="form-control" id="exampleEmail" value="{{ t[1] }}" readonly>
+    </div>
+    {% endfor %}
+
+    <div class="mb-3">
+      <label for="exampleNewPassword1" class="form-label">New Password</label>
+      <input type="password" class="form-control" id="exampleNewPassword1" name="newpassword1"
+        placeholder="Input your new password" required>
+    </div>
+
+
+    <div class="mb-3">
+      <label for="exampleNewPassword2" class="form-label">New Password</label>
+      <input type="password" class="form-control" id="exampleNewPassword2" name="newpassword2"
+        placeholder="Input your new password again" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm</button>
+    {% for message in get_flashed_messages() %}
+    <label style="color:red">{{message}}</label>
+    {% endfor %}
+  </form>
+
+</div>
+<script src="/static/js/form-validation.js"></script>
+
+{% endblock %}

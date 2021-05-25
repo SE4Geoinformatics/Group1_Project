@@ -38,14 +38,15 @@
             <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input type="search" class="form-control hidden" placeholder="Search...">
                 </form> -->
-            {% if session['user_id'] %}
+            {% if session['user_id'] %}            
             <div class="dropdown text-end">
+                
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    <img src="/static/images/person-check.svg" width="32" height="32" class="rounded">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Your Profile </a></li>
+                    <li><a class="dropdown-item" href="/userProfile">Your Profile </a></li>
                     <li><a class="dropdown-item" href="#">Your Data</a></li>
                     <li><a class="dropdown-item" href="#">Your Comment</a></li>
                     <li>
@@ -53,7 +54,7 @@
                     </li>
                     <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                 </ul>
-            </div>
+            </div>            
             {% else %}
             <div class="text-end">
                 <!-- Button trigger login modal -->
@@ -70,7 +71,8 @@
                             <div class="modal-header">
                                 <h5 class="modal-title text-dark" id="loginModalLabel">Login
                                 </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form action="/login" method="POST" class="p-5 border-0 rounded-3 bg-white text-dark">
@@ -94,9 +96,13 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Log in</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Don't have a Account? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal">Click here
+                                    <small class="text-muted">Don't have a Account? <a href="#" data-bs-dismiss="modal"
+                                            data-bs-toggle="modal" data-bs-target="#registerModal">Click here
                                             to
                                             Register.</a></small>
+                                    <br>
+                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here to
+                                            reset your password</a></small>
 
                                 </form>
                             </div>
@@ -126,16 +132,23 @@
                             <div class="modal-body">
                                 <form action="/register" method="POST"
                                     class="p-5 border-0 rounded-3 bg-white text-dark">
-                                   
+
                                     <div class="form-floating mb-3">
                                         <input name="username" type="text" class="form-control" id="floatingInput"
-                                            placeholder="Account" />
+                                            placeholder="Account" required />
                                         <label for="floatingInput">Account</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input name="password" type="password" class="form-control"
-                                            id="floatingPassword" placeholder="Password" />
+                                            id="floatingPassword" placeholder="Password" required />
                                         <label for="floatingPassword">Password</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input name="user_email" type="email" class="form-control" id="floatingEmail"
+                                            placeholder="email" required />
+                                        <label for="floatingEmail">Email</label>
+                                        <span class="small">(Keep in mind, it will be used to verify your account for
+                                            sensitive operations)</span>
                                     </div>
                                     <div class="checkbox mb-3">
                                         <label>
@@ -147,8 +160,12 @@
                                     </div>
                                     <button class="w-100 btn btn-lg btn-purple" type="submit">Register</button>
                                     <hr class="my-4">
-                                    <small class="text-muted">Having a Account? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
+                                    <small class="text-muted">Having a Account? <a href="#" data-bs-dismiss="modal"
+                                            data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
                                             in.</a></small>
+                                    <br>
+                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here to
+                                            reset your password</a></small>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -172,7 +189,8 @@
                         <i class="bi bi-pin-angle" style="font-size: 1rem; color:black;"></i>
                     </a>
 
-                    <a class="nav-link disabled" href="#">Total<span class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
+                    <a class="nav-link disabled" href="#">Total<span
+                            class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
                     </a>
                     <a class="nav-link" href="/addData">Add Data</a>
                     <a class="nav-link" href="/table">Query Data</a>
@@ -180,25 +198,25 @@
                 </nav>
             </div>
         </div>
-        {% endif %}       
+        {% endif %}
 
         {% block content %}{% endblock %}
 
         <!-- <hr class="featurette-divider"> -->
-        <br/>
+        <br />
     </main>
 
 
     <nav class="navbar navbar-expand-lg navbar-white p-3 bg-purple text-white ">
-            <footer class="container">
-                <p>&copy; Software engineering for geoinformatics. Group 1 &middot;</p>
-                <p class="float-end">                    
-                        <a class="nav-link active" href="#">
-                            <i class="bi bi-arrow-up-circle" style="font-size: 2rem; color: rgb(197, 208, 228);">
-                            </i>
-                        </a>
-                </p>                
-            </footer>
+        <footer class="container">
+            <p>&copy; Software engineering for geoinformatics. Group 1 &middot;</p>
+            <p class="float-end">
+                <a class="nav-link active" href="#">
+                    <i class="bi bi-arrow-up-circle" style="font-size: 2rem; color: rgb(197, 208, 228);">
+                    </i>
+                </a>
+            </p>
+        </footer>
     </nav>
 
 </body>

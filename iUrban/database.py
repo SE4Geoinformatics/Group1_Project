@@ -46,7 +46,7 @@ commands = (
         user_id SERIAL PRIMARY KEY,
         user_name VARCHAR(20) UNIQUE NOT NULL,
         user_password VARCHAR(255) NOT NULL,
-        user_email varchar(30)
+        user_email varchar(255)
         )
     """,
 
@@ -90,7 +90,7 @@ commands = (
 )
 
 sqlCommands = (
-    'INSERT INTO TUser (user_name, user_password) VALUES (%s, %s) RETURNING user_id',
+    'INSERT INTO TUser (user_name, user_password, user_email) VALUES (%s, %s, %s) RETURNING user_id',
 
     'INSERT INTO TData (author_id,  name, date, time, latitude, longitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  %s, %s, %s)',
 
@@ -110,8 +110,8 @@ try:
         cur.execute(command)
 
     # execute a statement
-    cur.execute(sqlCommands[0], ('song', generate_password_hash('123456')))
-    cur.execute(sqlCommands[0], ('test', generate_password_hash('123456')))
+    cur.execute(sqlCommands[0], ('song', generate_password_hash('123456'), 'song@mail.polimi'))
+    cur.execute(sqlCommands[0], ('test', generate_password_hash('123456'), 'song@mail.polimi'))
     userId = cur.fetchone()[0]
 
     # cur.execute(sqlCommands[1], ('1', 'name', 'date', 'time', 'latitude', 'longitude', 'average_noise_level', 'average_light_intensity', 'wind_direction', 'wind_speed', 'cloud_cover', 'cloud_type', 'cloud_photo_id', 'visibility', 'traffic_count', 'temperature', 'humidity', 'note_of_anomaly', 'air_pollution'))
