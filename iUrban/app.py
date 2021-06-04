@@ -38,7 +38,7 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 def get_dbConn():
     if 'dbConn' not in g:
         myFile = open(
-            "E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+            "C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -55,7 +55,7 @@ def connect_db():
     # # use the dbConfig.txt
 
     # # # use this code in VS Code
-    myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    myFile = open("C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
     # myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
     
     # # # use this code in Spyder
