@@ -2,6 +2,7 @@
 {% block content %}
 <link href="/static/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="/static/css/fixedColumns.bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
 <div class="container">
     <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
@@ -39,8 +40,7 @@
                 <select class="form-select" aria-label="Default select example" name="dcondition" value="" required>
                     <option value="="> = </option>
                     <option value=">"> > </option>
-                    <option value="<">
-                        < </option>
+                    <option value="<"> < </option>
                 </select>
                 <div class="invalid-feedback">
                     visibility is required.
@@ -142,7 +142,7 @@
                     <a href="/comment/{{t[0]}}" class="nav-link px-2">View</a>
                 </td>
             </tr>
-
+            
             <!-- Modal -->
             <div class="modal fade" id="viewDataModal{{t[0]}}" tabindex="-1"
                 aria-labelledby="viewDataModalLabel{{t[0]}}" aria-hidden="true">
@@ -245,26 +245,71 @@
 
         </tbody>
     </table>
+
+    
+    
+    <div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
 <script src="/static/js/jquery-3.5.1.min.js"></script>
 <script src="/static/js/jquery.dataTables.min.js"></script>
 <script src="/static/js/dataTables.fixedColumns.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+
 <script>
     $(document).ready(function () {
         var table = $('#tableExample').DataTable({
             "pagingType": "full_numbers",
             "scrollY": "400px",
             "scrollX": true,
+            select: true,
             scrollCollapse: true,
             paging: true,
             fixedColumns: {
                 leftColumns: 5,
                 rightColumns: 1
-            }
-        });
-
-    });
-
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'csvHtml5',
+                {
+                    text: 'JSON',
+                    action: function ( e, dt, button, config ) {
+                        var data = dt.buttons.exportData();
+    
+                        $.fn.dataTable.fileSave(
+                            new Blob( [ JSON.stringify( data ) ] ),
+                            'Export.json'
+                        );
+                    }
+                }
+            ]
+        } );
+    } ); 
 </script>
 {% endblock %}
