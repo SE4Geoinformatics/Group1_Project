@@ -38,7 +38,7 @@ data=df[["latitude", "longitude", "humidity"]]
 def city_map():
     city_map=folium.Map(location=[originY, originX], zoom_start=10, disable_3d = True)
     city_map.add_child(folium.LatLngPopup())
-    city_map.save("E:\\geoinfosys\\se\\data\\mymap.html")
+    city_map.save("citymap.html")
     return city_map
 city_map()
 
@@ -58,7 +58,7 @@ def marker():
                 ).add_to(markmap)
     markmap.add_child(folium.LatLngPopup())
     markmap.add_child(colorbar)
-    markmap.save("E:\\geoinfosys\\se\\data\\markmap.html")
+    markmap.save("markmap.html")
     return markmap
 marker()
 
@@ -66,7 +66,7 @@ def heatmap():
     heatmap=city_map()
     HeatMap(data).add_to(heatmap)
     heatmap.add_child(folium.LatLngPopup())
-    heatmap.save('E:\\geoinfosys\\se\\data\\heatmap.html')
+    heatmap.save('heatmap.html')
     return heatmap
 heatmap()
 
@@ -81,7 +81,7 @@ def clustered():
                 ).add_to(marker_cluster)
     clustermap.add_child(marker_cluster)
     clustermap.add_child(folium.LatLngPopup())
-    clustermap.save("E:\\geoinfosys\\se\\data\\clustermap.html")
+    clustermap.save("clustermap.html")
     return clustermap
 clustered()
 
@@ -114,12 +114,12 @@ def trade():
     folium.Marker(loc[0], popup='<b>Starting Point</b>').add_to(trademap)
     folium.Marker(loc[-1], popup='<b>End Point</b>').add_to(trademap)
     trademap.add_child(folium.LatLngPopup())
-    trademap.save("E:\\geoinfosys\\se\\data\\trademap.html")
+    trademap.save("trademap.html")
     return trademap
 trade()
 
 def polygon():
-    poly_map = gp.GeoDataFrame.from_file("E:\geoinfosys\gadm36_PER_shp\selected.shp", encoding = 'utf-8')
+    poly_map = gp.GeoDataFrame.from_file("selected.shp", encoding='utf-8')
     Poly_map = city_map()
     Poly_map.choropleth(
             geo_data=poly_map,
@@ -149,5 +149,22 @@ def polygon():
     return Poly_map
 polygon()
 
-# def convert_toGJ():
 
+def convert_toGJ(a):
+    datag = gp.read_file(a)
+    datag.to_file(driver="GeoJSON", encoding='utf-8')
+    return data
+
+
+def spatial_join():
+    shpjs = convert_toGJ('selected.shp')
+    poly_map = gp.GeoDataFrame.from_file("selected.shp", encoding='utf-8')
+    Poly_map = city_map()
+    Poly_map.choropleth(
+        geo_data=poly_map,
+        key_on='feature.properties.NAME_1',
+        fill_color='Red',
+        fill_opacity=0.05,
+        line_opacity=0.2)
+    geo_jsonp = [{'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [lon, lat]}} for lon, lat in zip(
+        list(df.longitude), list(df.latitude))]
