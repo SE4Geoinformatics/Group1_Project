@@ -259,6 +259,15 @@ def deleteAccount():
 
 @app.route('/base')
 def base():
+    # conn = connect_db()
+    # cur = conn.cursor()  # create a cursor
+    # cur.execute(
+    #     'select count(*) from TData'
+    # )
+    # dataCount = cur.fetchone()
+    # # print(dataCount)
+    # cur.close()  # close this cursor
+    # conn.commit()
     return render_template('base.html')
 
 
