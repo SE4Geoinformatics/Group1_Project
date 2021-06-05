@@ -19,7 +19,7 @@ def connect_db():
 
     # # use this code in VS Code
     
-    myFile = open("C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    myFile = open("E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
     # # use this code in Spyder
     # myFile = open("dbConfig.txt", "r", encoding='utf-8')
@@ -59,20 +59,20 @@ commands = (
         name VARCHAR(50) NOT NULL,
         date VARCHAR(50) NOT NULL,
         time VARCHAR(50) NOT NULL,
-        latitude FLOAT(16) NOT NULL,
-        longitude FLOAT(16) NOT NULL,
+        latitude FLOAT(32) NOT NULL,
+        longitude FLOAT(32) NOT NULL,
         average_noise_level INTEGER NOT NULL,
         average_light_intensity INTEGER NOT NULL,
-        wind_direction VARCHAR(16) NOT NULL,
+        wind_direction VARCHAR(32) NOT NULL,
         wind_speed INTEGER NOT NULL,
         cloud_cover INTEGER NOT NULL,
-        cloud_type VARCHAR(16) NOT NULL,
+        cloud_type VARCHAR(32) NOT NULL,
         cloud_photo_id VARCHAR(225),
         visibility INTEGER NOT NULL,
         traffic_count INTEGER NOT NULL,
         temperature INTEGER NOT NULL,
         humidity INTEGER NOT NULL,
-        note_of_anomaly VARCHAR(50),
+        note_of_anomaly VARCHAR(225),
         air_pollution INTEGER,
         FOREIGN KEY (author_id) REFERENCES TUser (user_id)
         )
@@ -111,22 +111,22 @@ try:
         cur.execute(command)
 
     # execute a statement
+    cur.execute(sqlCommands[0], ('admin', generate_password_hash('123456'), 'song@mail.polimi'))
     cur.execute(sqlCommands[0], ('song', generate_password_hash('123456'), 'song@mail.polimi'))
-    cur.execute(sqlCommands[0], ('test', generate_password_hash('123456'), 'song@mail.polimi'))
     userId = cur.fetchone()[0]
 
     # cur.execute(sqlCommands[1], ('1', 'name', 'date', 'time', 'latitude', 'longitude', 'average_noise_level', 'average_light_intensity', 'wind_direction', 'wind_speed', 'cloud_cover', 'cloud_type', 'cloud_photo_id', 'visibility', 'traffic_count', 'temperature', 'humidity', 'note_of_anomaly', 'air_pollution'))
 
-    cur.execute(sqlCommands[1], (userId, 'macarena valdivia', '23/11/2020', '08:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
+    # cur.execute(sqlCommands[1], (userId, 'macarena valdivia', '23/11/2020', '08:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
     
-    cur.execute(sqlCommands[1], (userId, 'song', '24/11/2020', '09:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
+    # cur.execute(sqlCommands[1], (userId, 'song', '24/11/2020', '09:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
 
-    cur.execute(sqlCommands[1], (userId, 'ding', '22/11/2020', '12:00:00', '-12.102838', '-77.039238', '50', '7164', 'NE', '4', '9', 'stratus', 'cloud_photo_id', '2', '100', '21', '68', 'note_of_anomaly', '9'))
+    # cur.execute(sqlCommands[1], (userId, 'ding', '22/11/2020', '12:00:00', '-12.102838', '-77.039238', '50', '7164', 'NE', '4', '9', 'stratus', 'cloud_photo_id', '2', '100', '21', '68', 'note_of_anomaly', '9'))
 
-    cur.execute(sqlCommands[2], ('1', '1', 'leave a comment'))
-    cur.execute(sqlCommands[2], ('1', '1', 'leave a comment'))
-    cur.execute(sqlCommands[2], ('2', '1', 'leave a comment'))
-    cur.execute(sqlCommands[2], ('2', '2', 'leave a comment'))
+    # cur.execute(sqlCommands[2], ('1', '1', 'i am admin'))
+    # cur.execute(sqlCommands[2], ('1', '1', 'i am admin'))
+    # cur.execute(sqlCommands[2], ('2', '1', 'i am song'))
+    # cur.execute(sqlCommands[2], ('2', '2', 'i am song'))
 
     # print(cur.fetchall())
     cur.close()
