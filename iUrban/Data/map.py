@@ -12,16 +12,21 @@ import branca
 import numpy as np
 import pandas as pd
 import geopandas as gp
-from getdata import df
+from psycopg2 import connect
 from folium.plugins import MarkerCluster
 from datetime import datetime
 import geopy
-from geopy.geocoders import Nominatim
 
-##pdreader = pd.read_csv('E:\\geoinfosys\\se\\data\\testdata2.csv', 'r', encoding="utf-8")
+# connect to database and catch data
+conn = connect(host='localhost', port='5432', dbname='iUrbanDB', user='postgres', password='postgre')
+sql_command = "select * from tdata"
+try:
+    df = pd.read_sql(sql_command, conn)
+except:
+    print("load data from postgres failure !")
+    exit()
 
-
-##print(pdreader)
+# set some static values
 originX=df.longitude[0]
 originY=df.latitude[0]
 X=df.longitude
@@ -54,6 +59,7 @@ def marker():
     markmap.add_child(folium.LatLngPopup())
     markmap.add_child(colorbar)
     markmap.save("E:\\geoinfosys\\se\\data\\markmap.html")
+    return markmap
 marker()
 
 def heatmap():
@@ -61,6 +67,7 @@ def heatmap():
     HeatMap(data).add_to(heatmap)
     heatmap.add_child(folium.LatLngPopup())
     heatmap.save('E:\\geoinfosys\\se\\data\\heatmap.html')
+    return heatmap
 heatmap()
 
 def clustered():
@@ -75,6 +82,7 @@ def clustered():
     clustermap.add_child(marker_cluster)
     clustermap.add_child(folium.LatLngPopup())
     clustermap.save("E:\\geoinfosys\\se\\data\\clustermap.html")
+    return clustermap
 clustered()
 
 
@@ -107,6 +115,7 @@ def trade():
     folium.Marker(loc[-1], popup='<b>End Point</b>').add_to(trademap)
     trademap.add_child(folium.LatLngPopup())
     trademap.save("E:\\geoinfosys\\se\\data\\trademap.html")
+    return trademap
 trade()
 
 def polygon():
@@ -137,6 +146,7 @@ def polygon():
     Poly_map.add_child(folium.LatLngPopup())
     Poly_map.add_child(colorbar)
     Poly_map.save("poly_map.html")
+    return Poly_map
 polygon()
 
 # def convert_toGJ():
