@@ -119,8 +119,8 @@
 
                 <td>{{ t[0] }}</td>
                 <td>{{ t[1] }}</td>
-                <td>{{ t[2] }}</td>
-                <td>{{ t[3] }}</td>
+                <td><span style="font-size: smaller;">{{ t[2] }}</span></td>
+                <td><span style="font-size: smaller;">{{ t[3] }}</span></td>
                 <td>{{ t[4] }}</td>
                 <td>{{ t[5] }}</td>
                 <td>{{ t[6] }}</td>
@@ -131,7 +131,11 @@
                 <td>{{ t[11] }}</td>
                 <td>{{ t[12] }}</td>
                 <td>{{ t[13] }}</td>
-                <td>{{ t[14] }}</td>
+                {% if  t[14] %}
+                <td><img src="{{ t[14] }}" alt="" width="25" height="25"></td>
+                {% else %}
+                <td></td>
+                {% endif %}
                 <td>{{ t[15] }}</td>
                 <td>{{ t[16] }}</td>
                 <td>{{ t[17] }}</td>

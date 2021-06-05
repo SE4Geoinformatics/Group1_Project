@@ -30,17 +30,30 @@
                 <ul class="navbar-nav mr-auto col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/index" class="nav-link px-2 text-white">Home</a></li>
                     <li><a href="/table" class="nav-link px-2 text-white">Table</a></li>
+                    {% if session['user_id'] %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link px-2 text-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Download
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/saveData/csv">To .csv format</a></li>
+                            <li><a class="dropdown-item" href="/saveData/txt">To .txt format</a></li>
+                            <li><a class="dropdown-item" href="/saveData/json">To .json format</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     <li><a href="#" class="nav-link px-2 text-white">Map</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">Download</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+
                 </ul>
             </div>
             <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input type="search" class="form-control hidden" placeholder="Search...">
                 </form> -->
-            {% if session['user_id'] %}            
+            {% if session['user_id'] %}
             <div class="dropdown text-end">
-                
+
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/static/images/person-check.svg" width="32" height="32" class="rounded">
@@ -54,7 +67,7 @@
                     </li>
                     <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                 </ul>
-            </div>            
+            </div>
             {% else %}
             <div class="text-end">
                 <!-- Button trigger login modal -->
@@ -101,7 +114,8 @@
                                             to
                                             Register.</a></small>
                                     <br>
-                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here to
+                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here
+                                            to
                                             reset your password</a></small>
 
                                 </form>
@@ -164,7 +178,8 @@
                                             data-bs-toggle="modal" data-bs-target="#loginModal">Click here to Log
                                             in.</a></small>
                                     <br>
-                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here to
+                                    <small class="text-muted">Forgot password?<a href="/resetPassword">&nbsp;Click here
+                                            to
                                             reset your password</a></small>
                                 </form>
                             </div>
@@ -189,13 +204,27 @@
                         <i class="bi bi-pin-angle" style="font-size: 1rem; color:black;"></i>
                     </a>
 
-                    <a class="nav-link disabled" href="#">Total<span
-                            class="badge bg-light text-dark rounded-pill align-text-bottom">571</span>
+                    <a class="nav-link disabled" href="#">Total
+
+                        <span class="badge bg-light text-dark rounded-pill align-text-bottom">{{ dataCount }}</span>
+
                     </a>
                     <a class="nav-link" href="/addData">Add Data</a>
                     <a class="nav-link" href="/table">Query Data</a>
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="/graphs/plotting">Plotting Data</a>
+                    <a class="nav-link" href="/upEP5" id="updateButton" onclick="javascript:return del();">updateDataFromEP5</a>
+
+
+                    <a class="nav-link disabled col align-self-end" href="#">
+                        <label>
+                            <!-- <input type="checkbox" value="remember-me"> Remember me -->
+                            {% for message in get_flashed_messages() %}
+                            <label style="color:red">{{message}}</label>
+                            {% endfor %}
+                        </label>
+                    </a>
                 </nav>
+
             </div>
         </div>
         {% endif %}
@@ -221,7 +250,19 @@
 
 </body>
 
+</html>
 <script src="/static/bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
 <!-- <script src="/static/bootstrap-5.0.0-beta3-dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- updateButton -->
+<script>
+    function del() {
+        var msg = "Updating data needs to be compared with the database. It may take a long time. Are you sure to update?\n\n\Please confirm";
+        if (confirm(msg) == true) {
+            return true
+        }
+        else {
+            return false
+        }
 
-</html>
+    }
+</script>
