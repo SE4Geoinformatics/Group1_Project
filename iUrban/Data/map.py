@@ -150,14 +150,14 @@ def polygon():
 polygon()
 
 
-def convert_toGJ(a):
-    datag = gp.read_file(a)
-    datag.to_file(driver="GeoJSON", encoding='utf-8')
-    return data
+# def convert_toGJ(a):
+#     datag = gp.read_file(a)
+#     datag.to_file('output',driver="GeoJSON", encoding='utf-8')
+#     return data
 
 
 def spatial_join():
-    shpjs = convert_toGJ('selected.shp')
+    # shpjs = convert_toGJ('selected.shp')
     poly_map = gp.GeoDataFrame.from_file("selected.shp", encoding='utf-8')
     Poly_map = city_map()
     Poly_map.choropleth(
@@ -166,5 +166,8 @@ def spatial_join():
         fill_color='Red',
         fill_opacity=0.05,
         line_opacity=0.2)
-    geo_jsonp = [{'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [lon, lat]}} for lon, lat in zip(
-        list(df.longitude), list(df.latitude))]
+    gdf = gp.GeoDataFrame(df, geometry=gp.points_from_xy(df.longitude, df.latitude))
+    statistic = gp.sjoin(poly_map, gdf, how='inner', op='intersects').groupby('NAME_3')
+
+
+spatial_join()
