@@ -23,17 +23,25 @@ from werkzeug.security import (
 )
 
 from werkzeug.exceptions import abort
+
 from psycopg2 import connect
-from dbConfig import config
+
+from ConnectDB import connect_db
+
+
 from tkinter import messagebox
+
 from bokeh.plotting import figure
 from bokeh.embed import components
 from flask import Flask, request, render_template, abort, Response
+from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, output_file
-from DataPackage import updateDataFromEP5, exportData
 from bokeh.models import ColorBar, ColumnDataSource
 from bokeh.palettes import Spectral6
 from bokeh.transform import linear_cmap
+
+from DataPackage import updateDataFromEP5, exportData
+from Data import map2
 
 app = Flask(__name__, template_folder='templates')
 
@@ -43,9 +51,9 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
 def get_dbConn():
     if 'dbConn' not in g:
-        myFile = open(
-            "C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-            
+        # myFile = open(
+        #     "E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+        myFile = "dbConfig.txt"
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -56,28 +64,6 @@ def close_dbConn():
     if 'dbConn' in g:
         g.dbComm.close()
         g.pop('dbConn')
-
-
-def connect_db():
-    # # use the dbConfig.txt
-
-    # # # use this code in VS Code
-    myFile = open("dbConfig.txt", "r", encoding='utf-8')
-    # myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-
-    # # # use this code in Spyder
-    # # myFile = open("dbConfig.txt", "r", encoding='utf-8')
-
-    connStr = myFile.readline()
-    conn = connect(connStr)
-    return conn
-
-    # *************************************************************
-    # # use the dbConfig.py
-    # params = config()
-    # print('Connecting to the PostgreSQL database...')
-    # conn = connect(**params)
-    # return conn
 
 
 def load_logged_in_user():
@@ -102,7 +88,7 @@ def load_logged_in_user():
 
 @app.route('/about', methods=['GET'])
 def aboutPage():
-    return render_template('about/about.html')
+    return render_template('about/about.html', dataCount=session['dataCount'])
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -229,13 +215,13 @@ def userProfile():
 
                 error = 'Edit successfully'
                 flash(error)
-                return render_template('userProfile.html', TUser=TUser)
+                return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
             else:
                 error = 'Two password entries are inconsistent!'
                 flash(error)
-                return render_template('userProfile.html', TUser=TUser)
+                return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
         else:
-            return render_template('userProfile.html', TUser=TUser)
+            return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
     else:
         error = 'Please login!'
         flash(error)
@@ -271,7 +257,8 @@ def deleteAccount():
 
 @app.route('/base')
 def base():
-    return render_template('index.html')
+
+    return render_template('index.html', dataCount=session['dataCount'])
 
 
 @app.route('/test')
@@ -297,6 +284,7 @@ def index():
     dataCount = cur.fetchone()[0]
     cur.close()  # close this cursor
     conn.commit()
+    session['dataCount'] = dataCount
     return render_template('index.html', dataCount=dataCount)
 
 
@@ -309,10 +297,20 @@ def table():
     )
 
     tData = cur.fetchall()
-    cur.close()
-    conn.commit()
+    # cur.close()
+    # conn.commit()
 
-    return render_template('table.html', page_title='Table', tData=tData)
+    # conn = connect_db()
+    # cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'select count(data_id) from TData'
+    )
+    dataCount = cur.fetchone()[0]
+    cur.close()  # close this cursor
+    conn.commit()
+    session['dataCount'] = dataCount
+
+    return render_template('table.html', page_title='Table', tData=tData, dataCount=session['dataCount'])
 
 
 @app.route('/queryData', methods=('GET', 'POST'))
@@ -375,7 +373,7 @@ def addData():
             conn.commit()
             return redirect(url_for('table'))
 
-        return render_template('addData.html', page_title='Add Data')
+        return render_template('addData.html', page_title='Add Data', dataCount=session['dataCount'])
     else:
         error = 'Only logged in users can add data!'
         flash(error)
@@ -397,7 +395,7 @@ def deleteData(data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('table'))
+    return redirect(url_for('table', dataCount=session['dataCount']))
 
 
 @app.route('/comment/<int:data_id>')
@@ -414,7 +412,7 @@ def comment(data_id):
     cur.close()
     conn.commit()
 
-    return render_template('comment.html', page_title=data_id, tComment=tComment, data_id=data_id)
+    return render_template('comment.html', page_title=data_id, tComment=tComment, data_id=data_id, dataCount=session['dataCount'])
 
 
 @app.route('/addComment/<int:data_id>', methods=['GET', 'POST'])
@@ -433,7 +431,7 @@ def addComment(data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('comment', data_id=data_id))
+    return redirect(url_for('comment', data_id=data_id, dataCount=session['dataCount']))
 
 
 @app.route('/deleteComment/<int:comment_id>/<int:data_id>')
@@ -449,7 +447,7 @@ def deleteComment(comment_id, data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('comment', data_id=data_id))
+    return redirect(url_for('comment', data_id=data_id, dataCount=session['dataCount']))
 
 
 @app.route('/saveData/<saveType>')
@@ -476,6 +474,7 @@ def upEP5():
         flash(error)
         return render_template('index.html')
 
+
 @app.route('/graphs/plotting')
 def plotting():
     x = []
@@ -492,24 +491,25 @@ def plotting():
 
     for data in tDatas:
         x.append(float(data[0]))
-        y.append(float(data[1])) 
+        y.append(float(data[1]))
 
-    #Use the field name of the column source
-    mapper = linear_cmap(field_name='y', palette=Spectral6 ,low=min(y) ,high=max(y))
+    # Use the field name of the column source
+    mapper = linear_cmap(field_name='y', palette=Spectral6,
+                         low=min(y), high=max(y))
 
-    source = ColumnDataSource(dict(x=x,y=y))
+    source = ColumnDataSource(dict(x=x, y=y))
 
-    p = figure(plot_width=300, plot_height=300, title="Linear Color Map Based on Y")
+    p = figure(plot_width=300, plot_height=300,
+               title="Linear Color Map Based on Y")
 
-    p.circle(x='x', y='y', line_color=mapper,color=mapper, fill_alpha=1, size=12, source=source)
+    p.circle(x='x', y='y', line_color=mapper, color=mapper,
+             fill_alpha=1, size=12, source=source)
 
     color_bar = ColorBar(color_mapper=mapper['transform'], width=8)
 
     p.add_layout(color_bar, 'right')
-    
-    
-        
-    # return jsonify(x,y)   
+
+    # return jsonify(x,y)
 
     # plot = figure()
     # plot.line(x, y)
@@ -521,10 +521,89 @@ def plotting():
     kwargs['title'] = 'plotting'
 
     if request.method == 'GET':
-        return render_template('graphs/plotting.html', **kwargs)
+        return render_template('graphs/plotting.html', **kwargs, dataCount=session['dataCount'])
     abort(404)
 
     abort(Response('plotting'))
+
+
+@app.route('/map/cityMap')
+def cityMap():
+    if load_logged_in_user():
+        return render_template("map/cityMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/markMap')
+def markMap():
+
+    if load_logged_in_user():
+        map2.marker()
+        return render_template("map/markMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/heatMap')
+def heatMap():
+
+    if load_logged_in_user():
+        return render_template("map/heatMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/clusterMap')
+def clusterMap():
+
+    if load_logged_in_user():
+        return render_template("map/clusterMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/polyMap')
+def polyMap():
+
+    if load_logged_in_user():
+        return render_template("map/polyMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/geocodeMap')
+def geocodeMap():
+
+    if load_logged_in_user():
+        return render_template("map/geocodeMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/tradeMap/<queryName>')
+def tradeMap(queryName):
+    queryName = queryName
+
+    if load_logged_in_user():
+        map2.trade(queryName)
+        return render_template("map/tradeMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
