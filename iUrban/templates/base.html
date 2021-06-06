@@ -43,20 +43,28 @@
                             <li><a class="dropdown-item" href="/saveData/json">To .json format</a></li>
                         </ul>
                     </li>
-                    {% endif %}
+
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link px-2 text-white dropdown-toggle" id="navbarDropdown1" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Map</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <li><a class="dropdown-item" href="/map/cityMap">Reaserch area</a></li>
-                            <li><a class="dropdown-item" href="/map/polyMap">PolyMap of the City</a></li>
-                            <li><a class="dropdown-item" href="/map/markMap">Samples</a></li>
-                            <li><a class="dropdown-item" href="/map/heatMap">HeatMap of Humidity</a></li>
-                            <li><a class="dropdown-item" href="/map/geocodeMap">Search by address</a></li>
+                            <li><a class="dropdown-item" href="/map/cityMap" target="_blank">Reaserch area</a></li>
+                            <li><a class="dropdown-item" href="/map/polyMap" target="_blank">PolyMap of the City</a>
+                            </li>
+                            <li><a class="dropdown-item" href="/map/markMap" target="_blank">Samples</a></li>
+                            <li><a class="dropdown-item" href="/map/heatMap" target="_blank">HeatMap of Humidity</a>
+                            </li>
+                            <li><a class="dropdown-item" href="/map/geocodeMap" target="_blank">Demo: Search by
+                                    address</a>
+                            </li>
+                            <!-- <li><a class="dropdown-item" href="/map/tradeMap" target="_blank">Demo:
+                                    Trajectory for user:
+                                    Denise</a></li> -->
 
                         </ul>
 
                     </li>
+                    {% endif %}
                     <li><a href="/about" class="nav-link px-2 text-white">About</a></li>
 
 

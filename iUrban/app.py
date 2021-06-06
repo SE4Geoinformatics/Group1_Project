@@ -38,6 +38,7 @@ from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, output_file
 
 from DataPackage import updateDataFromEP5, exportData
+from Data import map2
 
 app = Flask(__name__, template_folder='templates')
 
@@ -106,7 +107,7 @@ def load_logged_in_user():
 
 @app.route('/about', methods=['GET'])
 def aboutPage():
-    return render_template('about/about.html')
+    return render_template('about/about.html', dataCount=session['dataCount'])
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -233,13 +234,13 @@ def userProfile():
 
                 error = 'Edit successfully'
                 flash(error)
-                return render_template('userProfile.html', TUser=TUser)
+                return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
             else:
                 error = 'Two password entries are inconsistent!'
                 flash(error)
-                return render_template('userProfile.html', TUser=TUser)
+                return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
         else:
-            return render_template('userProfile.html', TUser=TUser)
+            return render_template('userProfile.html', TUser=TUser, dataCount=session['dataCount'])
     else:
         error = 'Please login!'
         flash(error)
@@ -275,7 +276,8 @@ def deleteAccount():
 
 @app.route('/base')
 def base():
-    return render_template('index.html')
+
+    return render_template('index.html', dataCount=session['dataCount'])
 
 
 @app.route('/test')
@@ -301,6 +303,7 @@ def index():
     dataCount = cur.fetchone()[0]
     cur.close()  # close this cursor
     conn.commit()
+    session['dataCount'] = dataCount
     return render_template('index.html', dataCount=dataCount)
 
 
@@ -316,7 +319,7 @@ def table():
     cur.close()
     conn.commit()
 
-    return render_template('table.html', page_title='Table', tData=tData)
+    return render_template('table.html', page_title='Table', tData=tData, dataCount=session['dataCount'])
 
 
 @app.route('/queryData', methods=('GET', 'POST'))
@@ -379,7 +382,7 @@ def addData():
             conn.commit()
             return redirect(url_for('table'))
 
-        return render_template('addData.html', page_title='Add Data')
+        return render_template('addData.html', page_title='Add Data', dataCount=session['dataCount'])
     else:
         error = 'Only logged in users can add data!'
         flash(error)
@@ -401,7 +404,7 @@ def deleteData(data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('table'))
+    return redirect(url_for('table', dataCount=session['dataCount']))
 
 
 @app.route('/comment/<int:data_id>')
@@ -418,7 +421,7 @@ def comment(data_id):
     cur.close()
     conn.commit()
 
-    return render_template('comment.html', page_title=data_id, tComment=tComment, data_id=data_id)
+    return render_template('comment.html', page_title=data_id, tComment=tComment, data_id=data_id, dataCount=session['dataCount'])
 
 
 @app.route('/addComment/<int:data_id>', methods=['GET', 'POST'])
@@ -437,7 +440,7 @@ def addComment(data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('comment', data_id=data_id))
+    return redirect(url_for('comment', data_id=data_id, dataCount=session['dataCount']))
 
 
 @app.route('/deleteComment/<int:comment_id>/<int:data_id>')
@@ -453,7 +456,7 @@ def deleteComment(comment_id, data_id):
     cur.close()
     conn.commit()
 
-    return redirect(url_for('comment', data_id=data_id))
+    return redirect(url_for('comment', data_id=data_id, dataCount=session['dataCount']))
 
 
 @app.route('/saveData/<saveType>')
@@ -511,7 +514,7 @@ def plotting():
     kwargs['title'] = 'plotting'
 
     if request.method == 'GET':
-        return render_template('graphs/plotting.html', **kwargs)
+        return render_template('graphs/plotting.html', **kwargs, dataCount=session['dataCount'])
     abort(404)
 
     abort(Response('plotting'))
@@ -519,32 +522,81 @@ def plotting():
 
 @app.route('/map/cityMap')
 def cityMap():
-    return render_template("map/cityMap.html")
+    if load_logged_in_user():
+        return render_template("map/cityMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 @app.route('/map/markMap')
 def markMap():
-    return render_template("map/markMap.html")
+
+    if load_logged_in_user():
+        map2.marker()
+        return render_template("map/markMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 @app.route('/map/heatMap')
 def heatMap():
-    return render_template("map/heatMap.html")
+
+    if load_logged_in_user():
+        return render_template("map/heatMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 @app.route('/map/clusterMap')
 def clusterMap():
-    return render_template("map/clusterMap.html")
+
+    if load_logged_in_user():
+        return render_template("map/clusterMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 @app.route('/map/polyMap')
 def polyMap():
-    return render_template("map/polyMap.html")
+
+    if load_logged_in_user():
+        return render_template("map/polyMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 @app.route('/map/geocodeMap')
 def geocodeMap():
-    return render_template("map/geocodeMap.html")
+
+    if load_logged_in_user():
+        return render_template("map/geocodeMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
+
+
+@app.route('/map/tradeMap/<queryName>')
+def tradeMap(queryName):
+    queryName = queryName
+
+    if load_logged_in_user():
+        map2.trade(queryName)
+        return render_template("map/tradeMap.html")
+    else:
+        error = 'Logged in please!'
+        flash(error)
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

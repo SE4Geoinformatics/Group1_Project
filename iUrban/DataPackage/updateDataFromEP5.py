@@ -27,7 +27,7 @@ def connect_db():
 def UpdateFromEP5():
     # send the request
     response = requests.get(
-        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=50')
+        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=500')
 
     # store the raw text of the response in a variable
     raw_data = response.text
@@ -102,7 +102,7 @@ def UpdateFromEP5():
                 latitude, longitude, date, time, name,)
         )
         data_id = cur.fetchone()
-        #cur.close()  # close this cursor
+        # cur.close()  # close this cursor
         conn.commit()
 
         if data_id is None:
@@ -112,7 +112,7 @@ def UpdateFromEP5():
                 'INSERT INTO TData (author_id, created_date, name, date, time, latitude, longitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (
                     author_id, created_date, name, date, time, latitude, longitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution)
             )
-            #cur.close()
+            # cur.close()
             conn.commit()
             i = i+1
         else:
