@@ -506,7 +506,7 @@ def plotting():
 
     plot_script, plot_div = components(plot)
 
-    kwargs = {'plot_script': plot_script, 'plot_div': plot_div, 'test': tDatas}
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
     kwargs['title'] = 'plotting'
 
     if request.method == 'GET':
