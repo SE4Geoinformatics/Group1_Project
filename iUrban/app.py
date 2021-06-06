@@ -76,7 +76,7 @@ def connect_db():
     conn = connect(connStr)
     return conn
 
-    #*************************************************************
+    # *************************************************************
     # # use the dbConfig.py
     # params = config()
     # print('Connecting to the PostgreSQL database...')
@@ -107,6 +107,7 @@ def load_logged_in_user():
 @app.route('/about', methods=['GET'])
 def aboutPage():
     return render_template('about/about.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -273,7 +274,7 @@ def deleteAccount():
 
 
 @app.route('/base')
-def base():    
+def base():
     return render_template('index.html')
 
 
@@ -466,12 +467,13 @@ def saveData(saveType):
         flash(error)
         return render_template('index.html')
 
+
 @app.route('/upEP5')
 def upEP5():
     if load_logged_in_user():
         countData = updateDataFromEP5.UpdateFromEP5()
-        error = 'Update successfully! Totle update '+ str(countData) +' data'
-        flash(error)        
+        error = 'Update successfully! Totle update ' + str(countData) + ' data'
+        flash(error)
         return redirect(url_for('table'))
     else:
         error = 'Please login!'
@@ -493,22 +495,22 @@ def plotting():
     conn.commit()
 
     for data in tDatas:
-        x.append( float( data[0] ))
-        y.append(float(data[1] )) 
+        x.append(float(data[0]))
+        y.append(float(data[1])) 
+        
+    # return jsonify(x,y)   
 
     plot = figure()
     plot.line(x, y)
-    plot.cross(x, y, size=15)
-
-    #Return HTML components to embed a Bokeh plot. The data for the plot is
-    #stored directly in the returned HTML
     plot_script, plot_div = components(plot)
 
-    kwargs = {'plot_script': plot_script, 'plot_div': plot_div, 'test': tDatas, 'tt': x, 'cc': y}
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div, 'test': tDatas}
     kwargs['title'] = 'plotting'
+
     if request.method == 'GET':
         return render_template('graphs/plotting.html', **kwargs)
     abort(404)
+
     abort(Response('plotting'))
 
 
