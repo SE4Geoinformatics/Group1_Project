@@ -20,6 +20,9 @@
 
             <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
                 role="tab" aria-controls="nav-5" aria-selected="false">Section 5</button>
+
+            <button class="nav-link" id="nav-6-tab" data-bs-toggle="tab" data-bs-target="#nav-6" type="button"
+                role="tab" aria-controls="nav-6" aria-selected="false">Section 6</button>
         </div>
     </nav>
 
@@ -42,7 +45,9 @@
         <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab">
             {% include 'about/tab-5.html' %}
         </div>
+        <div class="tab-pane fade" id="nav-6" role="tabpanel" aria-labelledby="nav-6-tab">
+            {% include 'about/tab-6.html' %}
+        </div>
     </div>
 </div>
-
 {% endblock %}
