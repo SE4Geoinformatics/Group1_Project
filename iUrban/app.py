@@ -49,7 +49,7 @@ def get_dbConn():
     if 'dbConn' not in g:
         myFile = open(
             "C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-            
+
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -480,11 +480,12 @@ def upEP5():
         flash(error)
         return render_template('index.html')
 
+
 @app.route('/graphs/plotting')
 def plotting():
     x = []
     y = []
-    
+
     conn = connect_db()
     cur = conn.cursor()
     cur.execute(
@@ -496,9 +497,9 @@ def plotting():
 
     for data in tDatas:
         x.append(float(data[0]))
-        y.append(float(data[1])) 
-        
-    # return jsonify(x,y)   
+        y.append(float(data[1]))
+
+    # return jsonify(x,y)
 
     plot = figure()
     plot.line(x, y)
@@ -514,6 +515,36 @@ def plotting():
     abort(404)
 
     abort(Response('plotting'))
+
+
+@app.route('/map/cityMap')
+def cityMap():
+    return render_template("map/cityMap.html")
+
+
+@app.route('/map/markMap')
+def markMap():
+    return render_template("map/markMap.html")
+
+
+@app.route('/map/heatMap')
+def heatMap():
+    return render_template("map/heatMap.html")
+
+
+@app.route('/map/clusterMap')
+def clusterMap():
+    return render_template("map/clusterMap.html")
+
+
+@app.route('/map/polyMap')
+def polyMap():
+    return render_template("map/polyMap.html")
+
+
+@app.route('/map/geocodeMap')
+def geocodeMap():
+    return render_template("map/geocodeMap.html")
 
 
 if __name__ == '__main__':
