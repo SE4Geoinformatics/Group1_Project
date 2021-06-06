@@ -89,4 +89,4 @@ for i in df.columns:
 #       'traffic_count', 'temperature', 'humidity', 'collecting_photo_id',
 #       'note_of_anomaly', 'air_pollution']
 
-df.to_csv('E:/geoinfosys/se/data/testdata2.csv')
+df.to_csv('exported-data.csv')
