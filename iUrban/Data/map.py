@@ -33,7 +33,9 @@ X=df.longitude
 Y=df.latitude
 humidity=df.humidity
 data=df[["latitude", "longitude", "humidity"]]
-
+colorlist = ['#ffffff', '#b6f6ff', '#6eedfe', '#25e4ff', '#00e6f1', '#19ffbe', '#46fe9c',
+             '#f6fa0f', '#ffde00', '#fbae00', '#ff7f00', '#ff5300', '#fe2200', '#ef0602', '#c20000', '#950101',
+             '#640002']
 
 def city_map():
     city_map=folium.Map(location=[originY, originX], zoom_start=10, disable_3d = True)
@@ -44,8 +46,6 @@ city_map()
 
 def marker():
     markmap=city_map()
-    colorlist = ['#ffffff','#b6f6ff','#6eedfe','#25e4ff','#00e6f1','#19ffbe','#46fe9c',
-                 '#f6fa0f','#ffde00','#fbae00','#ff7f00','#ff5300','#fe2200','#ef0602','#c20000','#950101','#640002']
     colorbar = branca.colormap.StepColormap(colorlist,vmin = df.humidity.min(),vmax = df.humidity.max(), caption= 'humidity')
     for i in range(len(X)):
         folium.Circle(
@@ -121,14 +121,21 @@ trade()
 def polygon():
     poly_map = gp.GeoDataFrame.from_file("selected.shp", encoding='utf-8')
     Poly_map = city_map()
-    Poly_map.choropleth(
-            geo_data=poly_map,
-            key_on= 'feature.properties.NAME_1',
-            fill_color='Red',
-            fill_opacity=0.05,
-            line_opacity=0.2)
-    colorlist = ['#ffffff','#b6f6ff','#6eedfe','#25e4ff','#00e6f1','#19ffbe','#46fe9c',
-                 '#f6fa0f','#ffde00','#fbae00','#ff7f00','#ff5300','#fe2200','#ef0602','#c20000','#950101','#640002']
+    # Poly_map.choropleth(
+    #         geo_data=poly_map,
+    #         key_on= 'feature.properties.NAME_1',
+    #         fill_color='Red',
+    #         fill_opacity=0.05,
+    #         line_opacity=0.2)
+    for _, r in poly_map.iterrows():
+        # without simplifying the representation of each borough, the map might not be displayed
+        # sim_geo = gpd.GeoSeries(r['geometry'])
+        sim_geo = gp.GeoSeries(r['geometry']).simplify(tolerance=0.001)
+        geo_j = sim_geo.to_json()
+        geo_j = folium.GeoJson(data=geo_j,
+                               style_function=lambda x: {'fillColor': 'orange'})
+        folium.Popup(r['NAME_1']).add_to(geo_j)
+        geo_j.add_to(Poly_map)
     colorbar = branca.colormap.StepColormap(colorlist,vmin = df.humidity.min(),vmax = df.humidity.max(), caption= 'humidity')
     for i in range(len(X)):
         folium.Circle(
@@ -150,24 +157,44 @@ def polygon():
 polygon()
 
 
-# def convert_toGJ(a):
-#     datag = gp.read_file(a)
-#     datag.to_file('output',driver="GeoJSON", encoding='utf-8')
-#     return data
+def geo_code():
+    geocodemap = city_map()
+    colorbar = branca.colormap.StepColormap(colorlist, vmin=df.humidity.min(), vmax=df.humidity.max(),
+                                            caption='humidity')
+    for i in range(len(X)):
+        folium.Circle(
+            location=[Y[i], X[i]],
+            radius=2,
+            popup=df.humidity[i],
+            color=colorbar(df.humidity[i]),
+            fill=True,
+            fill_opacity=0.5
+        ).add_to(geocodemap)
+    position = gp.tools.geocode('Larco Museum', 'Nominatim', user_agent='myuseragent')
+    position2 = gp.tools.geocode('Larco Museum', 'Nominatim', user_agent='myuseragent')
+    buffer = position.to_crs(epsg=7855).buffer(3000).to_crs(epsg=4326)
+    folium.GeoJson(buffer).add_to(Poly_map)
+    folium.GeoJson(position, tooltip=folium.GeoJsonTooltip(['address'])).add_to(geocodemap)
+    geocodemap.add_child(folium.LatLngPopup())
+    geocodemap.add_child(colorbar)
+    geocodemap.save("geocode_map.html")
+    return geocodemap
 
 
 def spatial_join():
     # shpjs = convert_toGJ('selected.shp')
     poly_map = gp.GeoDataFrame.from_file("selected.shp", encoding='utf-8')
-    Poly_map = city_map()
-    Poly_map.choropleth(
-        geo_data=poly_map,
+    sjmap = city_map()
+    gdf = gp.GeoDataFrame(df, geometry=gp.points_from_xy(df.longitude, df.latitude))
+    statistic = gp.sjoin(poly_map, gdf, how='inner', op='intersects')
+    sjmap.choropleth(
+        geo_data=statistic,
         key_on='feature.properties.NAME_1',
         fill_color='Red',
         fill_opacity=0.05,
         line_opacity=0.2)
-    gdf = gp.GeoDataFrame(df, geometry=gp.points_from_xy(df.longitude, df.latitude))
-    statistic = gp.sjoin(poly_map, gdf, how='inner', op='intersects').groupby('NAME_3')
+    sjmap.save('sjmap.html')
+    return
 
 
 spatial_join()
