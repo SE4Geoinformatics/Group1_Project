@@ -553,6 +553,7 @@ def markMap():
 def heatMap():
 
     if load_logged_in_user():
+        map2.heatmap()
         return render_template("map/heatMap.html")
     else:
         error = 'Logged in please!'
@@ -564,6 +565,7 @@ def heatMap():
 def clusterMap():
 
     if load_logged_in_user():
+        map2.clustered()
         return render_template("map/clusterMap.html")
     else:
         error = 'Logged in please!'
