@@ -5,6 +5,7 @@ Created on Mon Apr 12 22:52:38 2021
 @author: Group 1
 """
 #!/usr/bin/python
+from tkinter.constants import X
 from flask import (
     Flask,
     render_template,
@@ -13,6 +14,7 @@ from flask import (
     url_for,
     request,
     flash,
+    jsonify,
     g
 )
 from werkzeug.security import (
@@ -46,7 +48,8 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 def get_dbConn():
     if 'dbConn' not in g:
         myFile = open(
-            "E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+            "C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+            
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -63,7 +66,7 @@ def connect_db():
     # # use the dbConfig.txt
 
     # # # use this code in VS Code
-    myFile = open("E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    myFile = open("dbConfig.txt", "r", encoding='utf-8')
     # myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
     # # # use this code in Spyder
@@ -477,8 +480,21 @@ def upEP5():
 
 @app.route('/graphs/plotting')
 def plotting():
-    x = [5, 6, 7, 8, 9, 10]
-    y = [1, 2, 3, 4, 5, 6]
+    x = []
+    y = []
+    
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute(
+        'SELECT latitude, longitude FROM tdata'
+    )
+    tDatas = cur.fetchall()
+    cur.close()
+    conn.commit()
+
+    for data in tDatas:
+        x.append( float( data[0] ))
+        y.append(float(data[1] )) 
 
     plot = figure()
     plot.line(x, y)
@@ -488,7 +504,7 @@ def plotting():
     #stored directly in the returned HTML
     plot_script, plot_div = components(plot)
 
-    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div, 'test': tDatas, 'tt': x, 'cc': y}
     kwargs['title'] = 'plotting'
     if request.method == 'GET':
         return render_template('graphs/plotting.html', **kwargs)
