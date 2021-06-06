@@ -23,21 +23,19 @@ from werkzeug.security import (
 )
 
 from werkzeug.exceptions import abort
-
 from psycopg2 import connect
-
 from dbConfig import config
-
-
 from tkinter import messagebox
-
 from bokeh.plotting import figure
 from bokeh.embed import components
 from flask import Flask, request, render_template, abort, Response
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, output_file
-
 from DataPackage import updateDataFromEP5, exportData
+from bokeh.models import ColorBar, ColumnDataSource
+from bokeh.palettes import Spectral6
+from bokeh.plotting import figure, output_file, show
+from bokeh.transform import linear_cmap
 
 app = Flask(__name__, template_folder='templates')
 
@@ -484,7 +482,7 @@ def upEP5():
 def plotting():
     x = []
     y = []
-    
+
     conn = connect_db()
     cur = conn.cursor()
     cur.execute(
@@ -497,14 +495,29 @@ def plotting():
     for data in tDatas:
         x.append(float(data[0]))
         y.append(float(data[1])) 
+
+    #Use the field name of the column source
+    mapper = linear_cmap(field_name='y', palette=Spectral6 ,low=min(y) ,high=max(y))
+
+    source = ColumnDataSource(dict(x=x,y=y))
+
+    p = figure(plot_width=300, plot_height=300, title="Linear Color Map Based on Y")
+
+    p.circle(x='x', y='y', line_color=mapper,color=mapper, fill_alpha=1, size=12, source=source)
+
+    color_bar = ColorBar(color_mapper=mapper['transform'], width=8)
+
+    p.add_layout(color_bar, 'right')
+    
+    
         
     # return jsonify(x,y)   
 
-    plot = figure()
-    plot.line(x, y)
-    plot.cross(x, y, size=15)
+    # plot = figure()
+    # plot.line(x, y)
+    # plot.cross(x, y, size=15)
 
-    plot_script, plot_div = components(plot)
+    plot_script, plot_div = components(p)
 
     kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
     kwargs['title'] = 'plotting'
