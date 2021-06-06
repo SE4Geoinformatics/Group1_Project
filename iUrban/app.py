@@ -73,7 +73,7 @@ def connect_db():
     conn = connect(connStr)
     return conn
 
-    #*************************************************************
+    # *************************************************************
     # # use the dbConfig.py
     # params = config()
     # print('Connecting to the PostgreSQL database...')
@@ -104,6 +104,7 @@ def load_logged_in_user():
 @app.route('/about', methods=['GET'])
 def aboutPage():
     return render_template('about/about.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -270,7 +271,7 @@ def deleteAccount():
 
 
 @app.route('/base')
-def base():    
+def base():
     return render_template('index.html')
 
 
@@ -463,64 +464,66 @@ def saveData(saveType):
         flash(error)
         return render_template('index.html')
 
+
 @app.route('/upEP5')
 def upEP5():
     if load_logged_in_user():
         countData = updateDataFromEP5.UpdateFromEP5()
-        error = 'Update successfully! Totle update '+ str(countData) +' data'
-        flash(error)        
+        error = 'Update successfully! Totle update ' + str(countData) + ' data'
+        flash(error)
         return redirect(url_for('table'))
     else:
         error = 'Please login!'
         flash(error)
         return render_template('index.html')
 
+
 @app.route('/graphs/plotting')
-def plotting():
-    conn = connect_db()
-    cur = conn.cursor()  # create a cursor
-    cur.execute(
-        'SELECT count(data_id) FROM TData WHERE wind_speed = 1'
-    )
-    windspeed1 = cur.fetchone()[0]
-    cur.execute(
-        'SELECT count(*) FROM TData WHERE wind_speed = 2'
-    )
-    windspeed2 = cur.fetchone()[0]
-    cur.execute(
-        'SELECT count(*) FROM TData WHERE wind_speed = 3'
-    )
-    windspeed3 = cur.fetchone()[0]
-    cur.execute(
-        'SELECT count(*) FROM TData WHERE wind_speed = 4'
-    )
-    windspeed4 = cur.fetchone()[0]
-    cur.execute(
-        'SELECT count(*) FROM TData WHERE wind_speed > 4'
-    )
-    windspeed5 = cur.fetchone()[0]
+def plotting():
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'SELECT count(data_id) FROM TData WHERE wind_speed = 1'
+    )
+    windspeed1 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 2'
+    )
+    windspeed2 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 3'
+    )
+    windspeed3 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 4'
+    )
+    windspeed4 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed > 4'
+    )
+    windspeed5 = cur.fetchone()[0]
 
-    cur.close()
-    conn.commit()
+    cur.close()
+    conn.commit()
 
-    x = [1, 2, 3, 4, 5]
-    y = [windspeed1, windspeed2, windspeed3, windspeed4, windspeed5]
+    x = [1, 2, 3, 4, 5]
+    y = [windspeed1, windspeed2, windspeed3, windspeed4, windspeed5]
 
-    plot = figure(
-        title="Wind speed statistics graph. X-axis: wind speed. Y-axis: the number of occurrences")
+    plot = figure(
+        title="Wind speed statistics graph. X-axis: wind speed. Y-axis: the number of occurrences")
 
-    plot.vbar(x, top=y, color="blue", width=0.5)
+    plot.vbar(x, top=y, color="blue", width=0.5)
 
-    # Return HTML components to embed a Bokeh plot. The data for the plot is
-    # stored directly in the returned HTML
-    plot_script, plot_div = components(plot)
+    # Return HTML components to embed a Bokeh plot. The data for the plot is
+    # stored directly in the returned HTML
+    plot_script, plot_div = components(plot)
 
-    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
-    kwargs['title'] = 'plotting'
-    if request.method == 'GET':
-        return render_template('graphs/plotting.html', **kwargs)
-    abort(404)
-    abort(Response('plotting'))
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
+    kwargs['title'] = 'plotting'
+    if request.method == 'GET':
+        return render_template('graphs/plotting.html', **kwargs)
+    abort(404)
+    abort(Response('plotting'))
 
 
 if __name__ == '__main__':
