@@ -93,6 +93,10 @@ def load_logged_in_user():
         return True
 
 
+@app.route('/about', methods=['GET'])
+def aboutPage():
+    return render_template('about/about.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
