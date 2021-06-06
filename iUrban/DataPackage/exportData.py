@@ -4,30 +4,45 @@ import pandas as pd
 import geopandas as gpd
 import time
 
-#setup db connection (generic connection path to be update with your credentials: 'postgresql://user:password@localhost:5432/mydatabase')
-engine = create_engine(
+
+def save_file(saveType):
+    #setup db connection (generic connection path to be update with your credentials: 'postgresql://user:password@localhost:5432/mydatabase')
+    engine = create_engine(
     'postgresql://postgres:postgresql@localhost:5432/iUrbanDB')
 
-# read the dataframe from a postgreSQL table
-df_sql = pd.read_sql_table('tdata', engine)
+        # read the dataframe from a postgreSQL table
+    df_sql = pd.read_sql_table('tdata', engine)
 
-# 2016-03-20 11:45:39 == %Y-%m-%d %H:%M:%S
-timeNow = time.strftime("%Y_%m_%d", time.localtime())
-fileName = '~/Downloads/environmental_tdata_' + timeNow
-
-
-def save_file_to_csv():
-    df_sql.to_csv(fileName + '.csv')
-    return
+    # 2016-03-20 11:45:39 == %Y-%m-%d %H:%M:%S
+    timeNow = time.strftime("%Y_%m_%d", time.localtime())
+    fileName = '~/Downloads/environmental_tdata_' + timeNow
 
 
-def save_file_to_json():
-    df_sql.to_json(fileName + '.json')
-    return
+    if saveType == 'csv':
+        df_sql.to_csv(fileName + '.csv')
+    elif saveType == 'txt':
+        df_sql.to_csv(fileName + '.txt')
+    elif saveType == 'json':
+        df_sql.to_json(fileName + '.json')
+    else:
+        error = 'it is not a allowed type'        
+        return error
+
+    error = 'Download successfully!'
+    return error
+
+# def save_file_to_csv():
+#     df_sql.to_csv(fileName + '.csv')
+#     return
 
 
-def save_file_to_txt():
-    df_sql.to_csv(fileName + '.txt')
-    return
+# def save_file_to_json():
+#     df_sql.to_json(fileName + '.json')
+#     return
+
+
+# def save_file_to_txt():
+#     df_sql.to_csv(fileName + '.txt')
+#     return
 
 

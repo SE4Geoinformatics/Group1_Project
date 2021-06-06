@@ -29,6 +29,14 @@ from dbConfig import config
 
 from tkinter import messagebox
 
+from bokeh.plotting import figure
+from bokeh.embed import components
+from flask import Flask, request, render_template, abort, Response
+from bokeh.models import ColumnDataSource
+from bokeh.plotting import figure, show, output_file
+
+from DataPackage import updateDataFromEP5, exportData
+
 app = Flask(__name__, template_folder='templates')
 
 # Set the secret key to some random bytes. Keep this really secret!
@@ -38,7 +46,7 @@ app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 def get_dbConn():
     if 'dbConn' not in g:
         myFile = open(
-            "C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+            "E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
         connStr = myFile.readline()
         g.dbConn = connect(connStr)
 
@@ -55,9 +63,9 @@ def connect_db():
     # # use the dbConfig.txt
 
     # # # use this code in VS Code
-    myFile = open("C:\\Users\\admin\\Desktop\\se4gi_project\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+    myFile = open("E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
     # myFile = open("E:\\path in your computer\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-    
+
     # # # use this code in Spyder
     # # myFile = open("dbConfig.txt", "r", encoding='utf-8')
 
@@ -184,7 +192,7 @@ def logout():
 def resetPassword():
     if load_logged_in_user():
         session.clear()
-        return render_template('resetPassword.html')    
+        return render_template('resetPassword.html')
     else:
         return render_template('resetPassword.html')
 
@@ -262,17 +270,8 @@ def deleteAccount():
 
 
 @app.route('/base')
-def base():
-    # conn = connect_db()
-    # cur = conn.cursor()  # create a cursor
-    # cur.execute(
-    #     'select count(*) from TData'
-    # )
-    # dataCount = cur.fetchone()
-    # # print(dataCount)
-    # cur.close()  # close this cursor
-    # conn.commit()
-    return render_template('base.html')
+def base():    
+    return render_template('index.html')
 
 
 @app.route('/test')
@@ -290,7 +289,15 @@ def test():
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'select count(data_id) from TData'
+    )
+    dataCount = cur.fetchone()[0]
+    cur.close()  # close this cursor
+    conn.commit()
+    return render_template('index.html', dataCount=dataCount)
 
 
 @app.route('/table')
@@ -443,6 +450,50 @@ def deleteComment(comment_id, data_id):
     conn.commit()
 
     return redirect(url_for('comment', data_id=data_id))
+
+
+@app.route('/saveData/<saveType>')
+def saveData(saveType):
+    if load_logged_in_user():
+        error = exportData.save_file(saveType)
+        flash(error)
+        return redirect(url_for('index'))
+    else:
+        error = 'Please login!'
+        flash(error)
+        return render_template('index.html')
+
+@app.route('/upEP5')
+def upEP5():
+    if load_logged_in_user():
+        countData = updateDataFromEP5.UpdateFromEP5()
+        error = 'Update successfully! Totle update '+ str(countData) +' data'
+        flash(error)        
+        return redirect(url_for('table'))
+    else:
+        error = 'Please login!'
+        flash(error)
+        return render_template('index.html')
+
+@app.route('/graphs/plotting')
+def plotting():
+    x = [5, 6, 7, 8, 9, 10]
+    y = [1, 2, 3, 4, 5, 6]
+
+    plot = figure()
+    plot.line(x, y)
+    plot.cross(x, y, size=15)
+
+    #Return HTML components to embed a Bokeh plot. The data for the plot is
+    #stored directly in the returned HTML
+    plot_script, plot_div = components(plot)
+
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
+    kwargs['title'] = 'plotting'
+    if request.method == 'GET':
+        return render_template('graphs/plotting.html', **kwargs)
+    abort(404)
+    abort(Response('plotting'))
 
 
 if __name__ == '__main__':
