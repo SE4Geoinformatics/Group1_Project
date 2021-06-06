@@ -466,7 +466,8 @@ def saveData(saveType):
 def upEP5():
     if load_logged_in_user():
         countData = updateDataFromEP5.UpdateFromEP5()
-        error = 'Update successfully! Totle update ' + str(countData) + ' data'
+        error = 'Update successfully! Totlly update ' + \
+            str(countData) + ' data'
         flash(error)
         return redirect(url_for('table'))
     else:
