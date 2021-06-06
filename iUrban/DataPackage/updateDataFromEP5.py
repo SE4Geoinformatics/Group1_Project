@@ -27,7 +27,7 @@ def connect_db():
 def UpdateFromEP5():
     # send the request
     response = requests.get(
-        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=500')
+        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=50')
 
     # store the raw text of the response in a variable
     raw_data = response.text
@@ -127,7 +127,7 @@ def UpdateFromEP5():
             #     # conn.commit()
             #     continue
             # else:
-            #     print('数据已存在')
+            # print('数据已存在')
             #     continue
             print('This data already exists')
             continue
@@ -135,3 +135,6 @@ def UpdateFromEP5():
     cur.close()
     print('Return the value of updating count')
     return i
+
+
+# UpdateFromEP5()

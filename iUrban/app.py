@@ -26,7 +26,7 @@ from werkzeug.exceptions import abort
 
 from psycopg2 import connect
 
-from dbConfig import config
+from ConnectDB import connect_db
 
 
 from tkinter import messagebox
@@ -61,28 +61,6 @@ def close_dbConn():
     if 'dbConn' in g:
         g.dbComm.close()
         g.pop('dbConn')
-
-
-def connect_db():
-    # # use the dbConfig.txt
-
-    # # # use this code in VS Code
-    # myFile = open("dbConfig.txt", "r", encoding='utf-8')
-    myFile = open("E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-
-    # # # use this code in Spyder
-    # # myFile = open("dbConfig.txt", "r", encoding='utf-8')
-
-    connStr = myFile.readline()
-    conn = connect(connStr)
-    return conn
-
-    # *************************************************************
-    # # use the dbConfig.py
-    # params = config()
-    # print('Connecting to the PostgreSQL database...')
-    # conn = connect(**params)
-    # return conn
 
 
 def load_logged_in_user():
@@ -316,8 +294,18 @@ def table():
     )
 
     tData = cur.fetchall()
-    cur.close()
+    # cur.close()
+    # conn.commit()
+
+    # conn = connect_db()
+    # cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'select count(data_id) from TData'
+    )
+    dataCount = cur.fetchone()[0]
+    cur.close()  # close this cursor
     conn.commit()
+    session['dataCount'] = dataCount
 
     return render_template('table.html', page_title='Table', tData=tData, dataCount=session['dataCount'])
 
