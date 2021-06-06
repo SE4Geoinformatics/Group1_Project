@@ -527,6 +527,67 @@ def plotting():
     abort(Response('plotting'))
 
 
+@app.route('/graphs/plotting2')
+def plotting2():
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 1'
+    )
+    windspeed1 = cur.fetchone()[0]
+
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 2'
+    )
+    windspeed2 = cur.fetchone()[0]
+
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 3'
+    )
+    windspeed3 = cur.fetchone()[0]
+
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 4'
+    )
+    windspeed4 = cur.fetchone()[0]
+
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 5'
+    )
+    windspeed5 = cur.fetchone()[0]
+
+    cur.execute(
+        'select count(data_id) from tdata where wind_speed = 5'
+    )
+    windspeed6 = cur.fetchone()[0]
+
+    cur.close()
+    conn.commit()
+
+    x = [1, 2, 3, 4, 5, 6]
+    y = [windspeed1, windspeed2, windspeed3,
+         windspeed4, windspeed5, windspeed6]
+
+    plot = figure(
+        title="Wind speed statistics graph. X-axis: wind speed. Y-axis: the number of occurrences"
+    )
+
+    plot.vbar(x, top=y, color="blue", width=0.5)
+    # Return HTML components to embed a Bokeh plot. The data for the plot is
+    # stored directly in the returned HTML
+
+    plot_script, plot_div = components(plot)
+
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
+    kwargs['title'] = 'plotting'
+
+    if request.method == 'GET':
+        return render_template('graphs/plotting2.html', **kwargs, dataCount=session['dataCount'])
+    abort(404)
+
+    abort(Response('plotting'))
+
+
 @app.route('/map/cityMap')
 def cityMap():
     if load_logged_in_user():

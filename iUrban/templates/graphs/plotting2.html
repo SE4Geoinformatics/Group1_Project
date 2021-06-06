@@ -1,0 +1,18 @@
+<!-- http://jinja.pocoo.org/docs/2.10/templates/#escaping -->
+{% extends "base.html" %}
+{% block content %}
+
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-2.3.1.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.3.1.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.3.1.min.css" rel="stylesheet" type="text/css">
+
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-2.3.1.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.3.1.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.3.1.min.js"></script>
+
+<div class="container">
+    {{ plot_div|safe }}
+    {{ plot_script|safe }}
+</div>
+
+{% endblock %}
