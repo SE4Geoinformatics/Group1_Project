@@ -46,21 +46,21 @@ app = Flask(__name__, template_folder='templates')
 app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
 
-def get_dbConn():
-    if 'dbConn' not in g:
-        myFile = open(
-            "E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
+# def get_dbConn():
+#     if 'dbConn' not in g:
+#         myFile = open(
+#             "E:\\PolimiCourseFiles\\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
 
-        connStr = myFile.readline()
-        g.dbConn = connect(connStr)
+#         connStr = myFile.readline()
+#         g.dbConn = connect(connStr)
 
-    return g.dbConn
+#     return g.dbConn
 
 
-def close_dbConn():
-    if 'dbConn' in g:
-        g.dbComm.close()
-        g.pop('dbConn')
+# def close_dbConn():
+#     if 'dbConn' in g:
+#         g.dbComm.close()
+#         g.pop('dbConn')
 
 
 def load_logged_in_user():
