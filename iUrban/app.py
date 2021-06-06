@@ -476,24 +476,51 @@ def upEP5():
         return render_template('index.html')
 
 @app.route('/graphs/plotting')
-def plotting():
-    x = [5, 6, 7, 8, 9, 10]
-    y = [1, 2, 3, 4, 5, 6]
+def plotting():
+    conn = connect_db()
+    cur = conn.cursor()  # create a cursor
+    cur.execute(
+        'SELECT count(data_id) FROM TData WHERE wind_speed = 1'
+    )
+    windspeed1 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 2'
+    )
+    windspeed2 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 3'
+    )
+    windspeed3 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed = 4'
+    )
+    windspeed4 = cur.fetchone()[0]
+    cur.execute(
+        'SELECT count(*) FROM TData WHERE wind_speed > 4'
+    )
+    windspeed5 = cur.fetchone()[0]
 
-    plot = figure()
-    plot.line(x, y)
-    plot.cross(x, y, size=15)
+    cur.close()
+    conn.commit()
 
-    #Return HTML components to embed a Bokeh plot. The data for the plot is
-    #stored directly in the returned HTML
-    plot_script, plot_div = components(plot)
+    x = [1, 2, 3, 4, 5]
+    y = [windspeed1, windspeed2, windspeed3, windspeed4, windspeed5]
 
-    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
-    kwargs['title'] = 'plotting'
-    if request.method == 'GET':
-        return render_template('graphs/plotting.html', **kwargs)
-    abort(404)
-    abort(Response('plotting'))
+    plot = figure(
+        title="Wind speed statistics graph. X-axis: wind speed. Y-axis: the number of occurrences")
+
+    plot.vbar(x, top=y, color="blue", width=0.5)
+
+    # Return HTML components to embed a Bokeh plot. The data for the plot is
+    # stored directly in the returned HTML
+    plot_script, plot_div = components(plot)
+
+    kwargs = {'plot_script': plot_script, 'plot_div': plot_div}
+    kwargs['title'] = 'plotting'
+    if request.method == 'GET':
+        return render_template('graphs/plotting.html', **kwargs)
+    abort(404)
+    abort(Response('plotting'))
 
 
 if __name__ == '__main__':
