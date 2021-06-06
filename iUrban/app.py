@@ -502,6 +502,8 @@ def plotting():
 
     plot = figure()
     plot.line(x, y)
+    plot.cross(x, y, size=15)
+
     plot_script, plot_div = components(plot)
 
     kwargs = {'plot_script': plot_script, 'plot_div': plot_div, 'test': tDatas}
