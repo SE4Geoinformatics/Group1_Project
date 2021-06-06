@@ -102,7 +102,7 @@ def UpdateFromEP5():
                 latitude, longitude, date, time, name,)
         )
         data_id = cur.fetchone()
-        #cur.close()  # close this cursor
+        # cur.close()  # close this cursor
         conn.commit()
 
         if data_id is None:
@@ -112,7 +112,7 @@ def UpdateFromEP5():
                 'INSERT INTO TData (author_id, created_date, name, date, time, latitude, longitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (
                     author_id, created_date, name, date, time, latitude, longitude, average_noise_level, average_light_intensity, wind_direction, wind_speed, cloud_cover, cloud_type, cloud_photo_id, visibility, traffic_count, temperature, humidity, note_of_anomaly, air_pollution)
             )
-            #cur.close()
+            # cur.close()
             conn.commit()
             i = i+1
         else:
@@ -127,7 +127,7 @@ def UpdateFromEP5():
             #     # conn.commit()
             #     continue
             # else:
-            #     print('数据已存在')
+            # print('数据已存在')
             #     continue
             print('This data already exists')
             continue
@@ -135,3 +135,6 @@ def UpdateFromEP5():
     cur.close()
     print('Return the value of updating count')
     return i
+
+
+# UpdateFromEP5()

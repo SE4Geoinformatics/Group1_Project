@@ -7,36 +7,16 @@ Created on Tue Apr 13 00:21:35 2021
 """
 
 from psycopg2 import connect, DatabaseError
-from dbConfig import config
+from ConnectDB import connect_db
+
 from werkzeug.security import (
     check_password_hash,
     generate_password_hash
 )
 
 
-def connect_db():
-    # # use the dbConfig.txt
-
-    # # use this code in VS Code
-    
-    myFile = open("E:\\PolimiCourseFiles\MyCourses\\20202021semester2\\SE4geoinformatics\\gitProject\\Group1_Project\\iUrban\\dbConfig.txt", "r", encoding='utf-8')
-
-    # # use this code in Spyder
-    # myFile = open("dbConfig.txt", "r", encoding='utf-8')
-
-    connStr = myFile.readline()
-    conn = connect(connStr)
-    return conn
-
-    # # use the dbConfig.py
-    # params = config()
-    # print('Connecting to the PostgreSQL database...')
-    # conn = connect(**params)
-    # return conn
-
-
 cleanup = (
-    'DROP TABLE IF EXISTS TUser CASCADE',    
+    'DROP TABLE IF EXISTS TUser CASCADE',
     'DROP TABLE IF EXISTS TComment',
     'DROP TABLE IF EXISTS TData',
 )
@@ -111,14 +91,16 @@ try:
         cur.execute(command)
 
     # execute a statement
-    cur.execute(sqlCommands[0], ('admin', generate_password_hash('123456'), 'song@mail.polimi'))
-    cur.execute(sqlCommands[0], ('song', generate_password_hash('123456'), 'song@mail.polimi'))
+    cur.execute(sqlCommands[0], ('admin', generate_password_hash(
+        '123456'), 'song@mail.polimi'))
+    cur.execute(sqlCommands[0], ('song', generate_password_hash(
+        '123456'), 'song@mail.polimi'))
     userId = cur.fetchone()[0]
 
     # cur.execute(sqlCommands[1], ('1', 'name', 'date', 'time', 'latitude', 'longitude', 'average_noise_level', 'average_light_intensity', 'wind_direction', 'wind_speed', 'cloud_cover', 'cloud_type', 'cloud_photo_id', 'visibility', 'traffic_count', 'temperature', 'humidity', 'note_of_anomaly', 'air_pollution'))
 
     # cur.execute(sqlCommands[1], (userId, 'macarena valdivia', '23/11/2020', '08:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
-    
+
     # cur.execute(sqlCommands[1], (userId, 'song', '24/11/2020', '09:00:00', '-12.102838', '-77.039238', '57', '7164', 'NE', '4', '8', 'stratus', 'cloud_photo_id', '2', '102', '21', '68', 'note_of_anomaly', '9'))
 
     # cur.execute(sqlCommands[1], (userId, 'ding', '22/11/2020', '12:00:00', '-12.102838', '-77.039238', '50', '7164', 'NE', '4', '9', 'stratus', 'cloud_photo_id', '2', '100', '21', '68', 'note_of_anomaly', '9'))
