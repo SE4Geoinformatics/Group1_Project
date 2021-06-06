@@ -29,12 +29,10 @@ from tkinter import messagebox
 from bokeh.plotting import figure
 from bokeh.embed import components
 from flask import Flask, request, render_template, abort, Response
-from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, output_file
 from DataPackage import updateDataFromEP5, exportData
 from bokeh.models import ColorBar, ColumnDataSource
 from bokeh.palettes import Spectral6
-from bokeh.plotting import figure, output_file, show
 from bokeh.transform import linear_cmap
 
 app = Flask(__name__, template_folder='templates')
