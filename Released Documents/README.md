@@ -4,5 +4,5 @@ The Google Doc links for each document are present below:
 [Design Document](https://docs.google.com/document/d/15xMcQ01iN-PjcWlxAtscnYlfhrsHTWHSJUEwifY1uM0)  
 [Test Plan](https://docs.google.com/document/d/1CZu_8hCotKAiv8xcodMgQglD7WTxAPKvF_EgNYrZ_V8)  
 
-And for presentation :
+And for presentation:
 [Presentation](https://prezi.com/i/edit/2luz0p-zlbxz)
