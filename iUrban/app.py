@@ -528,7 +528,7 @@ def plotting():
     abort(Response('plotting'))
 
 
-@app.route('/graphs/plotting2')
+@app.route('/graphs/plotting2') 
 def plotting2():
     conn = connect_db()
     cur = conn.cursor()
