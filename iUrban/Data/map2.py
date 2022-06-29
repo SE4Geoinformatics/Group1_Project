@@ -53,8 +53,8 @@ def city_map():
     city_map = folium.Map(
         location=[originY, originX], zoom_start=10, disable_3d=True)
     city_map.add_child(folium.LatLngPopup())
-    city_map.save(
-        r"E:\PolimiCourseFiles\MyCourses\20202021semester2\SE4geoinformatics\gitProject\Group1_Project\iUrban\templates\map\cityMap.html")
+    # city_map.save(
+    #     r"E:\PolimiCourseFiles\MyCourses\20202021semester2\SE4geoinformatics\gitProject\Group1_Project\iUrban\templates\map\cityMap.html")
     return city_map
 
 

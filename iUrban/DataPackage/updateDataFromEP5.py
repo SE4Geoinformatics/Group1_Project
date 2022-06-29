@@ -27,7 +27,7 @@ def connect_db():
 def UpdateFromEP5():
     # send the request
     response = requests.get(
-        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=20')
+        'https://five.epicollect.net/api/export/entries/san-silvestre-geography-ia-2020?per_page=50')
 
     # store the raw text of the response in a variable
     raw_data = response.text
